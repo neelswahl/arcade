@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom Wordle</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #fcf7f0; color: #2d3748; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; overflow-x: hidden; }
+
+    /* HEADER */
+    header { width: 100%; background-color: #f15a24; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .logo { display: flex; gap: 4px; }
+    .logo-tile { background-color: #fff; color: #f15a24; font-weight: 900; width: 28px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+
+    .screen { width: 100%; max-width: 1200px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .hidden { display: none !important; }
+
+    /* TEACHER SETUP MODAL */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .setup-card { background: #fff; border-radius: 28px; padding: 40px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
+    .setup-title { font-size: 2rem; font-weight: 800; color: #f15a24; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .setup-subtitle { color: #a0aec0; margin-bottom: 25px; font-size: 1rem; }
+    .input-label { font-size: 0.85rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
+    .word-input { width: 100%; padding: 16px; font-size: 1.8rem; font-weight: 800; letter-spacing: 4px; text-align: center; text-transform: uppercase; border: 3px solid #f15a24; border-radius: 16px; background-color: #fff8f5; color: #4a5568; outline: none; margin-bottom: 25px; }
+    
+    .guesses-selector { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
+    .guess-btn { flex: 1; padding: 14px 0; font-size: 1.3rem; font-weight: 800; border-radius: 14px; border: 2px solid #edf2f7; background: #f7fafc; color: #4a5568; cursor: pointer; transition: all 0.2s; }
+    .guess-btn.active { background: #f15a24; color: #fff; border-color: #f15a24; box-shadow: 0 4px 12px rgba(241,90,36,0.3); }
+
+    .action-btn-group { display: flex; gap: 12px; }
+    .start-btn { flex: 2; background: #f15a24; color: #fff; border: none; padding: 16px; font-size: 1.2rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: background 0.2s; }
+    .start-btn:hover { background: #d94814; }
+    .qr-option-btn { flex: 1; background: #edf2f7; color: #2d3748; border: none; padding: 16px; font-size: 1rem; font-weight: 800; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    /* QR CODE MODAL */
+    .qr-modal-card { background: #fff; border-radius: 28px; padding: 35px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; }
+    .close-btn { position: absolute; top: 20px; right: 20px; background: #edf2f7; border: none; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
+    .qr-img { width: 220px; height: 220px; margin: 20px 0; border: 12px solid #f7fafc; border-radius: 16px; }
+    .url-display { font-size: 0.8rem; color: #a0aec0; word-break: break-all; margin-top: 10px; background: #f7fafc; padding: 8px; border-radius: 8px; }
+
+    /* GAME LAYOUT */
+    .game-container { display: flex; gap: 40px; align-items: flex-start; justify-content: center; width: 100%; margin-top: 10px; flex-wrap: wrap; }
+    
+    .grid-board { display: flex; flex-direction: column; gap: 8px; }
+    .grid-row { display: flex; gap: 8px; }
+    .tile { width: 56px; height: 56px; border: 2px solid #e2e8f0; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; text-transform: uppercase; color: #2d3748; transition: transform 0.15s, background-color 0.3s, border-color 0.3s; }
+    .tile.active { border-color: #a0aec0; transform: scale(1.03); }
+    .tile.correct { background-color: #48bb78 !important; color: #fff !important; border-color: #48bb78 !important; }
+    .tile.present { background-color: #ed8936 !important; color: #fff !important; border-color: #ed8936 !important; }
+    .tile.absent { background-color: #a0aec0 !important; color: #fff !important; border-color: #a0aec0 !important; }
+
+    /* SIDEBAR INFO PANEL */
+    .side-panel { display: flex; flex-direction: column; gap: 15px; width: 220px; }
+    .info-card { background: #fff; border-radius: 16px; padding: 15px; text-align: center; border: 1px solid #edf2f7; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .info-label { font-size: 0.75rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; }
+    .info-value { font-size: 2.2rem; font-weight: 900; color: #f15a24; line-height: 1.1; margin-top: 4px; }
+    .info-value sub { font-size: 0.9rem; font-weight: 600; color: #a0aec0; }
+
+    .legend-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #edf2f7; display: flex; flex-direction: column; gap: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 700; color: #4a5568; }
+    .legend-box { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+    .legend-box.green { background: #48bb78; }
+    .legend-box.orange { background: #ed8936; }
+    .legend-box.gray { background: #a0aec0; }
+
+    .reset-btn { background: #f15a24; color: #fff; border: none; padding: 14px; font-size: 1rem; font-weight: 800; border-radius: 12px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .reset-btn:hover { background: #d94814; }
+
+    /* ALPHABETICAL KEYBOARD */
+    .keyboard-container { width: 100%; max-width: 900px; margin-top: 25px; padding: 0 10px 20px; }
+    .kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
+    .key-btn { height: 52px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; font-weight: 800; color: #2d3748; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 1; min-width: 32px; box-shadow: 0 2px 0 #cbd5e0; user-select: none; transition: background 0.2s; }
+    .key-btn:active { transform: translateY(2px); box-shadow: none; }
+    .key-btn.action-key { background: #4299e1; color: #fff; border-color: #3182ce; box-shadow: 0 2px 0 #2b6cb0; flex: 1.8; }
+    .key-btn.correct { background: #48bb78 !important; color: #fff !important; border-color: #38a169 !important; }
+    .key-btn.present { background: #ed8936 !important; color: #fff !important; border-color: #dd6b20 !important; }
+    .key-btn.absent { background: #cbd5e0 !important; color: #718096 !important; border-color: #a0aec0 !important; }
+
+    @media (max-width: 768px) {
+      .game-container { flex-direction: column; align-items: center; }
+      .side-panel { width: 100%; max-width: 400px; flex-direction: row; justify-content: space-between; }
+      .tile { width: 44px; height: 44px; font-size: 1.4rem; }
+      .key-btn { height: 44px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <div class="logo-tile">W</div>
+      <div class="logo-tile">O</div>
+      <div class="logo-tile">R</div>
+      <div class="logo-tile">D</div>
+      <div class="logo-tile">L</div>
+      <div class="logo-tile">E</div>
+    </div>
+    <button class="reset-btn" style="padding: 6px 14px; font-size: 0.85rem;" onclick="openTeacherSetup()">🔒 Teacher Setup</button>
+  </header>
+
+  <!-- TEACHER SETUP MODAL -->
+  <div id="setupModal" class="modal-overlay">
+    <div class="setup-card">
+      <div class="setup-title">🔒 Teacher Setup</div>
+      <div class="setup-subtitle">Choose your options, then press Start!</div>
+
+      <div class="input-label">Secret Word</div>
+      <input type="password" id="secretInput" class="word-input" placeholder="TYPE WORD" autocomplete="off" onfocus="this.type='text'" onblur="this.type='password'">
+
+      <div class="input-label">Number of Guesses</div>
+      <div class="guesses-selector">
+        <button class="guess-btn" onclick="selectGuesses(4)">4</button>
+        <button class="guess-btn" onclick="selectGuesses(5)">5</button>
+        <button class="guess-btn active" onclick="selectGuesses(6)">6</button>
+        <button class="guess-btn" onclick="selectGuesses(7)">7</button>
+        <button class="guess-btn" onclick="selectGuesses(8)">8</button>
+      </div>
+
+      <div class="action-btn-group">
+        <button class="start-btn" onclick="startGameFromSetup()">▶ Start Game</button>
+        <button class="qr-option-btn" onclick="showQRCodeModal()">📱 QR Code</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR CODE MODAL -->
+  <div id="qrModal" class="modal-overlay hidden">
+    <div class="qr-modal-card">
+      <button class="close-btn" onclick="closeQRModal()">✕</button>
+      <div style="font-size: 0.85rem; font-weight: 800; color: #4299e1; letter-spacing: 1px;">SCAN TO PLAY</div>
+      <div style="font-size: 1.8rem; font-weight: 900; color: #1a202c; margin-top: 2px;">Wordle</div>
+      
+      <img id="qrImage" class="qr-img" src="" alt="QR Code">
+
+      <p style="font-weight: 700; color: #4a5568;">Point camera at the code</p>
+      <p style="font-size: 0.9rem; color: #a0aec0;">Tap the link that appears</p>
+
+      <div id="urlDisplay" class="url-display"></div>
+    </div>
+  </div>
+
+  <!-- GAMEPLAY AREA -->
+  <main class="screen">
+    <div class="game-container">
+      
+      <!-- GRID -->
+      <div id="gridBoard" class="grid-board"></div>
+
+      <!-- SIDE PANEL -->
+      <div class="side-panel">
+        <div class="info-card">
+          <div class="info-label">Guesses</div>
+          <div class="info-value"><span id="currentGuessCount">0</span><sub id="maxGuessDisplay"> of 6</sub></div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">Letters</div>
+          <div class="info-value" id="letterCountDisplay">0</div>
+        </div>
+
+        <div class="legend-card">
+          <div class="legend-item"><div class="legend-box green"></div> Correct spot</div>
+          <div class="legend-item"><div class="legend-box orange"></div> Wrong spot</div>
+          <div class="legend-item"><div class="legend-box gray"></div> Not in word</div>
+        </div>
+
+        <button class="reset-btn" onclick="openTeacherSetup()">🔄 New Word</button>
+      </div>
+
+    </div>
+
+    <!-- ALPHABETICAL KEYBOARD -->
+    <div class="keyboard-container">
+      <div class="kb-row">
+        <button class="key-btn action-key" onclick="handleKeyPress('BACKSPACE')">⌫</button>
+        <button class="key-btn" data-key="A" onclick="handleKeyPress('A')">A</button>
+        <button class="key-btn" data-key="B" onclick="handleKeyPress('B')">B</button>
+        <button class="key-btn" data-key="C" onclick="handleKeyPress('C')">C</button>
+        <button class="key-btn" data-key="D" onclick="handleKeyPress('D')">D</button>
+        <button class="key-btn" data-key="E" onclick="handleKeyPress('E')">E</button>
+        <button class="key-btn" data-key="F" onclick="handleKeyPress('F')">F</button>
+        <button class="key-btn" data-key="G" onclick="handleKeyPress('G')">G</button>
+        <button class="key-btn" data-key="H" onclick="handleKeyPress('H')">H</button>
+        <button class="key-btn" data-key="I" onclick="handleKeyPress('I')">I</button>
+        <button class="key-btn" data-key="J" onclick="handleKeyPress('J')">J</button>
+        <button class="key-btn" data-key="K" onclick="handleKeyPress('K')">K</button>
+        <button class="key-btn" data-key="L" onclick="handleKeyPress('L')">L</button>
+        <button class="key-btn" data-key="M" onclick="handleKeyPress('M')">M</button>
+        <button class="key-btn action-key" onclick="handleKeyPress('ENTER')">ENTER</button>
+      </div>
+      <div class="kb-row">
+        <button class="key-btn" data-key="N" onclick="handleKeyPress('N')">N</button>
+        <button class="key-btn" data-key="O" onclick="handleKeyPress('O')">O</button>
+        <button class="key-btn" data-key="P" onclick="handleKeyPress('P')">P</button>
+        <button class="key-btn" data-key="Q" onclick="handleKeyPress('Q')">Q</button>
+        <button class="key-btn" data-key="R" onclick="handleKeyPress('R')">R</button>
+        <button class="key-btn" data-key="S" onclick="handleKeyPress('S')">S</button>
+        <button class="key-btn" data-key="T" onclick="handleKeyPress('T')">T</button>
+        <button class="key-btn" data-key="U" onclick="handleKeyPress('U')">U</button>
+        <button class="key-btn" data-key="V" onclick="handleKeyPress('V')">V</button>
+        <button class="key-btn" data-key="W" onclick="handleKeyPress('W')">W</button>
+        <button class="key-btn" data-key="X" onclick="handleKeyPress('X')">X</button>
+        <button class="key-btn" data-key="Y" onclick="handleKeyPress('Y')">Y</button>
+        <button class="key-btn" data-key="Z" onclick="handleKeyPress('Z')">Z</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let secretWord = "";
+    let maxGuesses = 6;
+    let currentRow = 0;
+    let currentTile = 0;
+    let gameOver = false;
+
+    // Load URL parameters if scanned from QR Code
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const encodedWord = urlParams.get('w');
+      const guessesParam = urlParams.get('g');
+
+      if (encodedWord) {
+        try {
+          secretWord = atob(encodedWord).toUpperCase();
+          maxGuesses = parseInt(guessesParam) || 6;
+          document.getElementById('setupModal').classList.add('hidden');
+          initBoard();
+          return;
+        } catch (e) {
+          console.error("Invalid word link");
+        }
+      }
+      openTeacherSetup();
+    };
+
+    function openTeacherSetup() {
+      document.getElementById('setupModal').classList.remove('hidden');
+    }
+
+    function selectGuesses(num) {
+      maxGuesses = num;
+      document.querySelectorAll('.guess-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.textContent) === num) btn.classList.add('active');
+      });
+    }
+
+    function startGameFromSetup() {
+      const input = document.getElementById('secretInput').value.trim().toUpperCase();
+      if (!input || !/^[A-Z]+$/.test(input)) {
+        alert("Please enter a valid word (letters only).");
+        return;
+      }
+      secretWord = input;
+      document.getElementById('setupModal').classList.add('hidden');
+      initBoard();
+    }
+
+    function generatePlayURL() {
+      const input = document.getElementById('secretInput').value.trim().toUpperCase();
+      if (!input || !/^[A-Z]+$/.test(input)) {
+        alert("Please enter a secret word first!");
+        return null;
+      }
+      const encoded = btoa(input); // Encodes word so students cannot read it in address bar
+      const baseURL = window.location.href.split('?')[0];
+      return `${baseURL}?w=${encoded}&g=${maxGuesses}`;
+    }
+
+    function showQRCodeModal() {
+      const playURL = generatePlayURL();
+      if (!playURL) return;
+
+      const qrImg = document.getElementById('qrImage');
+      const urlDisplay = document.getElementById('urlDisplay');
+
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(playURL)}`;
+      urlDisplay.textContent = playURL;
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    function closeQRModal() {
+      document.getElementById('qrModal').classList.add('hidden');
+    }
+
+    function initBoard() {
+      currentRow = 0;
+      currentTile = 0;
+      gameOver = false;
+
+      document.getElementById('currentGuessCount').textContent = "0";
+      document.getElementById('maxGuessDisplay').textContent = ` of ${maxGuesses}`;
+      document.getElementById('letterCountDisplay').textContent = secretWord.length;
+
+      const board = document.getElementById('gridBoard');
+      board.innerHTML = "";
+
+      for (let r = 0; r < maxGuesses; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'grid-row';
+        rowDiv.id = `row-${r}`;
+
+        for (let c = 0; c < secretWord.length; c++) {
+          const tileDiv = document.createElement('div');
+          tileDiv.className = 'tile';
+          tileDiv.id = `tile-${r}-${c}`;
+          rowDiv.appendChild(tileDiv);
+        }
+        board.appendChild(rowDiv);
+      }
+
+      document.querySelectorAll('.key-btn').forEach(btn => {
+        btn.classList.remove('correct', 'present', 'absent');
+      });
+    }
+
+    function handleKeyPress(key) {
+      if (gameOver) return;
+
+      if (key === 'BACKSPACE') {
+        if (currentTile > 0) {
+          currentTile--;
+          const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+          tile.textContent = "";
+          tile.classList.remove('active');
+        }
+      } else if (key === 'ENTER') {
+        if (currentTile === secretWord.length) {
+          submitGuess();
+        } else {
+          alert(`Word must be ${secretWord.length} letters long!`);
+        }
+      } else if (/^[A-Z]$/.test(key)) {
+        if (currentTile < secretWord.length) {
+          const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+          tile.textContent = key;
+          tile.classList.add('active');
+          currentTile++;
+        }
+      }
+    }
+
+    // Physical Keyboard Support
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('setupModal').classList.contains('hidden')) return;
+      if (e.key === 'Backspace') handleKeyPress('BACKSPACE');
+      else if (e.key === 'Enter') handleKeyPress('ENTER');
+      else {
+        const upper = e.key.toUpperCase();
+        if (/^[A-Z]$/.test(upper)) handleKeyPress(upper);
+      }
+    });
+
+    function submitGuess() {
+      let currentGuess = "";
+      for (let c = 0; c < secretWord.length; c++) {
+        currentGuess += document.getElementById(`tile-${currentRow}-${c}`).textContent;
+      }
+
+      const secretArr = secretWord.split('');
+      const guessArr = currentGuess.split('');
+      const rowResult = Array(secretWord.length).fill('absent');
+
+      // Check correct positions
+      for (let i = 0; i < secretWord.length; i++) {
+        if (guessArr[i] === secretArr[i]) {
+          rowResult[i] = 'correct';
+          secretArr[i] = null;
+        }
+      }
+
+      // Check present positions
+      for (let i = 0; i < secretWord.length; i++) {
+        if (rowResult[i] === 'correct') continue;
+        const index = secretArr.indexOf(guessArr[i]);
+        if (index !== -1) {
+          rowResult[i] = 'present';
+          secretArr[index] = null;
+        }
+      }
+
+      // Apply styling
+      for (let i = 0; i < secretWord.length; i++) {
+        const tile = document.getElementById(`tile-${currentRow}-${i}`);
+        const letter = guessArr[i];
+        tile.classList.remove('active');
+        tile.classList.add(rowResult[i]);
+
+        const keyBtn = document.querySelector(`.key-btn[data-key="${letter}"]`);
+        if (keyBtn) {
+          if (rowResult[i] === 'correct') {
+            keyBtn.classList.remove('present', 'absent');
+            keyBtn.classList.add('correct');
+          } else if (rowResult[i] === 'present' && !keyBtn.classList.contains('correct')) {
+            keyBtn.classList.remove('absent');
+            keyBtn.classList.add('present');
+          } else if (rowResult[i] === 'absent' && !keyBtn.classList.contains('correct') && !keyBtn.classList.contains('present')) {
+            keyBtn.classList.add('absent');
+          }
+        }
+      }
+
+      currentRow++;
+      currentTile = 0;
+      document.getElementById('currentGuessCount').textContent = currentRow;
+
+      if (currentGuess === secretWord) {
+        gameOver = true;
+        setTimeout(() => alert("🎉 Excellent! You guessed the secret word!"), 200);
+      } else if (currentRow === maxGuesses) {
+        gameOver = true;
+        setTimeout(() => alert(`❌ Game Over! The secret word was: ${secretWord}`), 200);
+      }
+    }
+  </script>
+</body>
+</html>
