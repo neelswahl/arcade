@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulary Jeopardy!</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Arial Black', Gadget, sans-serif; }
+    body {
+      background-color: #060ce9;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #ffcc00;
+      text-shadow: 3px 3px #000;
+      margin: 0 0 10px 0;
+      text-transform: uppercase;
+    }
+    .admin-btn {
+      background-color: #28a745;
+      color: white;
+      border: 2px solid white;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .admin-btn:hover { background-color: #218838; }
+
+    /* Board Styling */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 1100px;
+      background-color: #000;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .category-header {
+      background-color: #060ce9;
+      color: #fff;
+      border: 2px solid #000;
+      padding: 15px 5px;
+      text-align: center;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+    }
+    .tile {
+      background-color: #060ce9;
+      color: #ffcc00;
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      cursor: pointer;
+      border: 2px solid #000;
+      text-shadow: 2px 2px #000;
+      transition: transform 0.1s, background-color 0.2s;
+    }
+    .tile:hover {
+      background-color: #121bfd;
+      transform: scale(1.02);
+    }
+    .tile.used {
+      background-color: #030678;
+      color: #030678;
+      text-shadow: none;
+      cursor: default;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      max-width: 1100px;
+      margin-top: 25px;
+      background: #000;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .team-score { text-align: center; min-width: 120px; }
+    .team-name { color: #ffcc00; font-size: 1.1rem; }
+    .score-val { font-size: 1.8rem; margin: 5px 0; }
+    .score-btn {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      margin: 0 2px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .btn-add { background-color: #28a745; color: white; }
+    .btn-sub { background-color: #dc3545; color: white; }
+
+    /* Timer Display */
+    .timer {
+      font-size: 1.6rem;
+      color: #ffcc00;
+      background: #000;
+      padding: 6px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 15px;
+      border: 2px solid #ffcc00;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    /* Modal Popup */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 100;
+    }
+    .modal-content {
+      background-color: #060ce9;
+      border: 4px solid #ffcc00;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 750px;
+      width: 90%;
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .clue-text { font-size: 1.8rem; margin-bottom: 20px; line-height: 1.4; white-space: pre-line; letter-spacing: 1px; }
+    .answer-text { font-size: 1.8rem; color: #ffcc00; margin: 20px 0; display: none; }
+    .action-btn {
+      background-color: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 6px;
+      margin: 10px 5px 0 5px;
+      font-weight: bold;
+    }
+    .action-btn:hover { background-color: #e6b800; }
+
+    /* Instructions & Textarea */
+    .instructions {
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 4px solid #ffcc00;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    textarea {
+      width: 100%;
+      height: 220px;
+      font-family: monospace;
+      padding: 10px;
+      border-radius: 6px;
+      border: 2px solid #ffcc00;
+      margin: 10px 0;
+      font-size: 0.85rem;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <h1>Vocabulary Jeopardy</h1>
+    <button class="admin-btn" onclick="openUploadModal()">⚙️ Enter Custom Word List</button>
+  </div>
+
+  <div class="board" id="jeopardy-board"></div>
+
+  <!-- Scoreboard for 6 Teams -->
+  <div class="scoreboard">
+    <div class="team-score"><div class="team-name">Team 1</div><div class="score-val" id="score-1">$0</div><button class="score-btn btn-add" onclick="changeScore(1, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(1, -100)">-$100</button></div>
+    <div class="team-score"><div class="team-name">Team 2</div><div class="score-val" id="score-2">$0</div><button class="score-btn btn-add" onclick="changeScore(2, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(2, -100)">-$100</button></div>
+    <div class="team-score"><div class="team-name">Team 3</div><div class="score-val" id="score-3">$0</div><button class="score-btn btn-add" onclick="changeScore(3, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(3, -100)">-$100</button></div>
+    <div class="team-score"><div class="team-name">Team 4</div><div class="score-val" id="score-4">$0</div><button class="score-btn btn-add" onclick="changeScore(4, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(4, -100)">-$100</button></div>
+    <div class="team-score"><div class="team-name">Team 5</div><div class="score-val" id="score-5">$0</div><button class="score-btn btn-add" onclick="changeScore(5, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(5, -100)">-$100</button></div>
+    <div class="team-score"><div class="team-name">Team 6</div><div class="score-val" id="score-6">$0</div><button class="score-btn btn-add" onclick="changeScore(6, 100)">+$100</button><button class="score-btn btn-sub" onclick="changeScore(6, -100)">-$100</button></div>
+  </div>
+
+  <!-- Question Popup Modal -->
+  <div class="modal" id="clue-modal">
+    <div class="modal-content">
+      <div class="timer" id="timer-display">⏱️ Time Remaining: 30s</div>
+      <div class="clue-text" id="clue-text">Clue goes here...</div>
+      <div class="answer-text" id="answer-text">Answer goes here...</div>
+      <button class="action-btn" id="reveal-btn" onclick="revealAnswer()">Show Answer</button>
+      <button class="action-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Word List Modal -->
+  <div class="modal" id="upload-modal">
+    <div class="modal-content">
+      <h2 style="color:#ffcc00; margin-top:0;">Upload Custom Vocabulary Words</h2>
+      
+      <div class="instructions">
+        <strong>INSTRUCTIONS:</strong><br>
+        Copy and paste directly from Excel / Google Sheets (or use commas).<br>
+        Order of columns per row:<br>
+        <code>Word | Definition | Part of speech | Synonyms | Fill-in-the-blank | Scrambled Spelling</code>
+      </div>
+
+      <textarea id="word-list-input" placeholder="Paste your Excel spreadsheet rows here..."></textarea>
+
+      <div style="margin-top: 15px;">
+        <button class="action-btn" id="generate-btn" onclick="generateFromWords()">⚡ Generate Game</button>
+        <button class="action-btn" style="background:#dc3545; color:white;" onclick="resetToDefault()">Reset Default</button>
+        <button class="action-btn" style="background:#6c757d; color:white;" onclick="closeUploadModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultRawData = `executive\tA/An executive in a business makes decisions about what should be done.\tnoun\tboss, manager\tA/An ___ in the company meets with the employees to discuss their ideas.\tx e e u c t i v e
+equip\tIf you equip yourself for a job or experience, you make sure you have what is necessary to do it well.\tverb\tsupply, provide\tThe building is ____ed with emergency exits.\tq u e p i
+harness\tA harness is a strap used to fasten or control something.\tnoun\tstrap, belt\tService animals wear a special ____.\tr a e h n s s
+stabilizing\tSomething that is stabilizing keeps other things steady.\tadjective\tbalancing, steadying\tIf he removes the ____ block, it will fall.\ts a b i t i l z i n g
+exhale\tIf you exhale, you breathe air out from your lungs.\tverb\tbreathe out, expire\tIt was so cold we could see our breath when we ____d.\tx h a e l e`;
+
+    let gameData = [];
+    let teamScores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+    let timerInterval;
+    let timeLeft = 30;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playTickSound(isTock) {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(isTock ? 600 : 800, ctx.currentTime);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
+      } catch (e) { console.error(e); }
+    }
+
+    function playAlarmSound() {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(950, ctx.currentTime);
+        osc.frequency.setValueAtTime(1250, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.4, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.2);
+      } catch (e) { console.error(e); }
+    }
+
+    function playBuzzerSound() {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(130, ctx.currentTime);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.7);
+      } catch (e) { console.error(e); }
+    }
+
+    function initGameData() {
+      const savedData = localStorage.getItem("jeopardyCustomData");
+      if (savedData) {
+        try { 
+          gameData = JSON.parse(savedData); 
+          // Force update old category name if cached in browser memory
+          if (gameData[4] && gameData[4].category !== "spelling scramble") {
+            gameData[4].category = "spelling scramble";
+            localStorage.setItem("jeopardyCustomData", JSON.stringify(gameData));
+          }
+        } 
+        catch (e) { buildGameFromRawText(defaultRawData); }
+      } else {
+        buildGameFromRawText(defaultRawData);
+      }
+      document.getElementById("word-list-input").value = defaultRawData;
+      renderBoard();
+    }
+
+    function renderBoard() {
+      const board = document.getElementById("jeopardy-board");
+      board.innerHTML = "";
+
+      gameData.forEach(cat => {
+        const header = document.createElement("div");
+        header.className = "category-header";
+        header.textContent = cat.category;
+        board.appendChild(header);
+      });
+
+      for (let r = 0; r < 5; r++) {
+        gameData.forEach(cat => {
+          const clue = cat.clues[r] || { value: (r + 1) * 100, question: "N/A", answer: "N/A" };
+          const tile = document.createElement("div");
+          tile.className = "tile";
+          tile.textContent = `$${clue.value}`;
+          tile.onclick = () => openClue(tile, clue);
+          board.appendChild(tile);
+        });
+      }
+    }
+
+    function openClue(tileElement, clue) {
+      if (tileElement.classList.contains("used")) return;
+
+      document.getElementById("clue-text").textContent = clue.question;
+      document.getElementById("answer-text").textContent = clue.answer;
+      document.getElementById("answer-text").style.display = "none";
+      document.getElementById("reveal-btn").style.display = "inline-block";
+
+      document.getElementById("clue-modal").style.display = "flex";
+      tileElement.classList.add("used");
+      tileElement.textContent = "";
+
+      startTimer();
+    }
+
+    function revealAnswer() {
+      document.getElementById("answer-text").style.display = "block";
+      document.getElementById("reveal-btn").style.display = "none";
+    }
+
+    function closeModal() {
+      stopTimer();
+      document.getElementById("clue-modal").style.display = "none";
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 30;
+      const display = document.getElementById("timer-display");
+      display.style.color = "#ffcc00";
+      display.style.borderColor = "#ffcc00";
+      display.textContent = `⏱️ Time Remaining: ${timeLeft}s`;
+
+      playTickSound(false);
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        display.textContent = `⏱️ Time Remaining: ${timeLeft}s`;
+
+        if (timeLeft > 5) {
+          playTickSound(timeLeft % 2 === 0);
+        } else if (timeLeft > 0) {
+          display.style.color = "#ff3333";
+          display.style.borderColor = "#ff3333";
+          playAlarmSound();
+        } else {
+          clearInterval(timerInterval);
+          display.textContent = "⏰ TIME'S UP!";
+          playBuzzerSound();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function changeScore(team, amount) {
+      teamScores[team] += amount;
+      document.getElementById(`score-${team}`).textContent = `$${teamScores[team]}`;
+    }
+
+    function openUploadModal() {
+      document.getElementById("upload-modal").style.display = "flex";
+    }
+
+    function closeUploadModal() {
+      document.getElementById("upload-modal").style.display = "none";
+    }
+
+    // Helper: Replace main word and word roots with blanks in definition
+    function sanitizeDefinition(defText, word) {
+      if (!word || !defText) return defText;
+      let cleanWord = word.trim();
+      let stem = cleanWord;
+      
+      if (cleanWord.endsWith('ing')) stem = cleanWord.slice(0, -3);
+      else if (cleanWord.endsWith('ed')) stem = cleanWord.slice(0, -2);
+      else if (cleanWord.endsWith('es')) stem = cleanWord.slice(0, -2);
+      else if (cleanWord.endsWith('s')) stem = cleanWord.slice(0, -1);
+
+      const escapedWord = cleanWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const escapedStem = stem.length >= 3 ? stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : escapedWord;
+
+      const regex = new RegExp(`\\b(${escapedStem}|${escapedWord})[a-z]*\\b`, 'gi');
+      return defText.replace(regex, '___');
+    }
+
+    // Fallback auto-scramble if column 6 is blank
+    function autoScramble(word) {
+      if (!word) return "";
+      let arr = word.trim().split('');
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.join(' ').toUpperCase();
+    }
+
+    // Fisher-Yates array shuffling
+    function shuffleArray(arr) {
+      const array = [...arr];
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function parseCustomLine(line) {
+      let parts = [];
+      if (line.includes('\t')) {
+        parts = line.split('\t').map(p => p.trim());
+      } else {
+        parts = line.split(',').map(p => p.trim());
+      }
+
+      if (parts.length < 1 || !parts[0]) return null;
+
+      return {
+        word: parts[0] || "",
+        definition: parts[1] || "",
+        pos: parts[2] || "",
+        synonyms: parts[3] || "",
+        fillIn: parts[4] || "",
+        scrambled: parts[5] || ""
+      };
+    }
+
+    function buildGameFromRawText(rawText) {
+      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      const parsedItems = lines.map(parseCustomLine).filter(item => item !== null);
+
+      if (parsedItems.length === 0) return false;
+
+      const categories = [
+        { name: "definition", key: "definition" },
+        { name: "part of speech", key: "pos" },
+        { name: "synonyms", key: "synonyms" },
+        { name: "fill-in-the-blank", key: "fillIn" },
+        { name: "spelling scramble", key: "scrambled" }
+      ];
+
+      const newGameData = categories.map(cat => {
+        const shuffledItems = shuffleArray(parsedItems);
+        const clues = [];
+
+        for (let r = 0; r < 5; r++) {
+          const item = shuffledItems[r % shuffledItems.length];
+          const val = (r + 1) * 100;
+
+          let questionText = "";
+          let answerText = "";
+
+          if (cat.key === "definition") {
+            questionText = sanitizeDefinition(item.definition, item.word);
+            answerText = item.word;
+          } else if (cat.key === "pos") {
+            questionText = item.word;
+            answerText = item.pos;
+          } else if (cat.key === "synonyms") {
+            questionText = item.word;
+            answerText = item.synonyms;
+          } else if (cat.key === "fillIn") {
+            questionText = item.fillIn;
+            answerText = item.word;
+          } else if (cat.key === "scrambled") {
+            questionText = item.scrambled ? item.scrambled : autoScramble(item.word);
+            answerText = item.word;
+          }
+
+          clues.push({ value: val, question: questionText, answer: answerText });
+        }
+
+        return { category: cat.name, clues: clues };
+      });
+
+      gameData = newGameData;
+      localStorage.setItem("jeopardyCustomData", JSON.stringify(gameData));
+      return true;
+    }
+
+    function generateFromWords() {
+      const rawInput = document.getElementById("word-list-input").value.trim();
+      if (!rawInput) {
+        alert("Please enter or paste your word list!");
+        return;
+      }
+
+      const success = buildGameFromRawText(rawInput);
+      if (!success) {
+        alert("Could not parse your word list. Please check the formatting.");
+        return;
+      }
+
+      renderBoard();
+closeUploadModal();
+      alert("Successfully loaded and randomized your vocabulary board!");
+    }
+
+    function resetToDefault() {
+      localStorage.removeItem("jeopardyCustomData");
+      document.getElementById("word-list-input").value = defaultRawData;
+      buildGameFromRawText(defaultRawData);
+      renderBoard();
+      closeUploadModal();
+      alert("Game reset to default!");
+    }
+
+    initGameData();
+  </script>
+</body>
+</html>
