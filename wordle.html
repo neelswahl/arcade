@@ -2,31 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Classroom Wordle</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #fcf7f0; color: #2d3748; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; overflow-x: hidden; }
 
     /* HEADER */
-    header { width: 100%; background-color: #f15a24; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .logo { display: flex; gap: 4px; }
-    .logo-tile { background-color: #fff; color: #f15a24; font-weight: 900; width: 28px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+    header { width: 100%; background-color: #f15a24; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .logo { display: flex; gap: 6px; }
+    .logo-tile { background-color: #fff; color: #f15a24; font-weight: 900; width: 38px; height: 38px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
 
-    .screen { width: 100%; max-width: 1200px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+    .screen { width: 100%; max-width: 1300px; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; flex-grow: 1; justify-content: center; }
     .hidden { display: none !important; }
 
     /* TEACHER SETUP MODAL */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-    .setup-card { background: #fff; border-radius: 28px; padding: 40px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
-    .setup-title { font-size: 2rem; font-weight: 800; color: #f15a24; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .setup-subtitle { color: #a0aec0; margin-bottom: 25px; font-size: 1rem; }
-    .input-label { font-size: 0.85rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .setup-card { background: #fff; border-radius: 28px; padding: 40px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; }
+    .setup-title { font-size: 2.2rem; font-weight: 800; color: #f15a24; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .setup-subtitle { color: #a0aec0; margin-bottom: 25px; font-size: 1.1rem; }
+    .input-label { font-size: 0.9rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
     
     /* INPUT & EYE TOGGLE BUTTON */
     .input-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
-    .word-input { width: 100%; padding: 16px 55px 16px 20px; font-size: 1.8rem; font-weight: 800; letter-spacing: 4px; text-align: center; text-transform: uppercase; border: 3px solid #f15a24; border-radius: 16px; background-color: #fff8f5; color: #4a5568; outline: none; }
-    .toggle-vis-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; user-select: none; opacity: 0.7; transition: opacity 0.2s; }
+    .word-input { width: 100%; padding: 16px 55px 16px 20px; font-size: 2rem; font-weight: 800; letter-spacing: 4px; text-align: center; text-transform: uppercase; border: 3px solid #f15a24; border-radius: 16px; background-color: #fff8f5; color: #4a5568; outline: none; }
+    .toggle-vis-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.6rem; cursor: pointer; user-select: none; opacity: 0.7; transition: opacity 0.2s; }
     .toggle-vis-btn:hover { opacity: 1; }
 
     .guesses-selector { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
@@ -34,63 +34,96 @@
     .guess-btn.active { background: #f15a24; color: #fff; border-color: #f15a24; box-shadow: 0 4px 12px rgba(241,90,36,0.3); }
 
     .action-btn-group { display: flex; gap: 12px; }
-    .start-btn { flex: 2; background: #f15a24; color: #fff; border: none; padding: 16px; font-size: 1.2rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: background 0.2s; }
+    .start-btn { flex: 2; background: #f15a24; color: #fff; border: none; padding: 16px; font-size: 1.25rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: background 0.2s; }
     .start-btn:hover { background: #d94814; }
-    .qr-option-btn { flex: 1; background: #edf2f7; color: #2d3748; border: none; padding: 16px; font-size: 1rem; font-weight: 800; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .qr-option-btn { flex: 1; background: #edf2f7; color: #2d3748; border: none; padding: 16px; font-size: 1.05rem; font-weight: 800; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
     /* QR CODE MODAL */
-    .qr-modal-card { background: #fff; border-radius: 28px; padding: 35px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; }
+    .qr-modal-card { background: #fff; border-radius: 28px; padding: 35px; width: 100%; max-width: 440px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; }
     .close-btn { position: absolute; top: 20px; right: 20px; background: #edf2f7; border: none; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
-    .qr-img { width: 220px; height: 220px; margin: 20px 0; border: 12px solid #f7fafc; border-radius: 16px; }
-    .url-display { font-size: 0.8rem; color: #a0aec0; word-break: break-all; margin-top: 10px; background: #f7fafc; padding: 8px; border-radius: 8px; }
+    .qr-img { width: 240px; height: 240px; margin: 20px 0; border: 12px solid #f7fafc; border-radius: 16px; }
+    .url-display { font-size: 0.85rem; color: #a0aec0; word-break: break-all; margin-top: 10px; background: #f7fafc; padding: 10px; border-radius: 8px; }
 
     /* GAME LAYOUT */
-    .game-container { display: flex; gap: 40px; align-items: flex-start; justify-content: center; width: 100%; margin-top: 10px; flex-wrap: wrap; }
+    .game-container { display: flex; gap: 50px; align-items: center; justify-content: center; width: 100%; cursor: pointer; flex-wrap: wrap; }
     
-    .grid-board { display: flex; flex-direction: column; gap: 8px; }
-    .grid-row { display: flex; gap: 8px; }
-    .tile { width: 56px; height: 56px; border: 2px solid #e2e8f0; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; text-transform: uppercase; color: #2d3748; transition: transform 0.15s, background-color 0.3s, border-color 0.3s; }
-    .tile.active { border-color: #a0aec0; transform: scale(1.03); }
+    /* GRID SCALING FOR DESKTOP & SMARTBOARDS */
+    .grid-board { display: flex; flex-direction: column; gap: 12px; }
+    .grid-row { display: flex; gap: 12px; }
+    .tile { 
+      width: clamp(52px, 6.5vw, 78px); 
+      height: clamp(52px, 6.5vw, 78px); 
+      border: 3px solid #cbd5e0; 
+      border-radius: 16px; 
+      background: #fff; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); 
+      font-weight: 900; 
+      text-transform: uppercase; 
+      color: #2d3748; 
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      transition: transform 0.15s, background-color 0.3s, border-color 0.3s; 
+    }
+    .tile.active { border-color: #f15a24; transform: scale(1.04); }
     .tile.correct { background-color: #48bb78 !important; color: #fff !important; border-color: #48bb78 !important; }
     .tile.present { background-color: #ed8936 !important; color: #fff !important; border-color: #ed8936 !important; }
     .tile.absent { background-color: #a0aec0 !important; color: #fff !important; border-color: #a0aec0 !important; }
 
     /* SIDEBAR INFO PANEL */
-    .side-panel { display: flex; flex-direction: column; gap: 15px; width: 220px; }
-    .info-card { background: #fff; border-radius: 16px; padding: 15px; text-align: center; border: 1px solid #edf2f7; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-    .info-label { font-size: 0.75rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; }
-    .info-value { font-size: 2.2rem; font-weight: 900; color: #f15a24; line-height: 1.1; margin-top: 4px; }
-    .info-value sub { font-size: 0.9rem; font-weight: 600; color: #a0aec0; }
+    .side-panel { display: flex; flex-direction: column; gap: 20px; width: 280px; }
+    .info-card { background: #fff; border-radius: 20px; padding: 20px; text-align: center; border: 2px solid #edf2f7; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .info-label { font-size: 0.85rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; }
+    .info-value { font-size: 3rem; font-weight: 900; color: #f15a24; line-height: 1.1; margin-top: 4px; }
+    .info-value sub { font-size: 1.2rem; font-weight: 600; color: #a0aec0; }
 
-    .legend-card { background: #fff; border-radius: 16px; padding: 15px; border: 1px solid #edf2f7; display: flex; flex-direction: column; gap: 10px; }
-    .legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 700; color: #4a5568; }
-    .legend-box { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+    .legend-card { background: #fff; border-radius: 20px; padding: 20px; border: 2px solid #edf2f7; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .legend-item { display: flex; align-items: center; gap: 12px; font-size: 1rem; font-weight: 700; color: #4a5568; }
+    .legend-box { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; }
     .legend-box.green { background: #48bb78; }
     .legend-box.orange { background: #ed8936; }
     .legend-box.gray { background: #a0aec0; }
 
-    .reset-btn { background: #f15a24; color: #fff; border: none; padding: 14px; font-size: 1rem; font-weight: 800; border-radius: 12px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .reset-btn { background: #f15a24; color: #fff; border: none; padding: 16px; font-size: 1.1rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(241,90,36,0.25); }
     .reset-btn:hover { background: #d94814; }
 
-    /* ALPHABETICAL KEYBOARD */
-    .keyboard-container { width: 100%; max-width: 900px; margin-top: 25px; padding: 0 10px 20px; }
-    .kb-row { display: flex; justify-content: center; gap: 6px; margin-bottom: 8px; }
-    .key-btn { height: 52px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; font-weight: 800; color: #2d3748; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 1; min-width: 32px; box-shadow: 0 2px 0 #cbd5e0; user-select: none; transition: background 0.2s; }
-    .key-btn:active { transform: translateY(2px); box-shadow: none; }
-    .key-btn.action-key { background: #4299e1; color: #fff; border-color: #3182ce; box-shadow: 0 2px 0 #2b6cb0; flex: 1.8; }
-    .key-btn.correct { background: #48bb78 !important; color: #fff !important; border-color: #38a169 !important; }
-    .key-btn.present { background: #ed8936 !important; color: #fff !important; border-color: #dd6b20 !important; }
-    .key-btn.absent { background: #cbd5e0 !important; color: #718096 !important; border-color: #a0aec0 !important; }
+    /* HIDDEN NATIVE KEYBOARD INPUT */
+    #nativeKeyboardInput {
+      position: absolute;
+      opacity: 0;
+      top: -1000px;
+      left: -1000px;
+      height: 1px;
+      width: 1px;
+    }
+
+    .keyboard-prompt {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #a0aec0;
+      background: #edf2f7;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     @media (max-width: 768px) {
-      .game-container { flex-direction: column; align-items: center; }
-      .side-panel { width: 100%; max-width: 400px; flex-direction: row; justify-content: space-between; }
-      .tile { width: 44px; height: 44px; font-size: 1.4rem; }
-      .key-btn { height: 44px; font-size: 0.95rem; }
+      .game-container { flex-direction: column; gap: 20px; }
+      .side-panel { width: 100%; max-width: 450px; flex-direction: row; justify-content: space-between; }
+      .info-card, .legend-card { flex: 1; padding: 12px; }
+      .info-value { font-size: 2rem; }
+      .legend-card { display: none; } /* Hidden on mobile to save vertical space for native keyboard */
     }
   </style>
 </head>
 <body>
+
+  <!-- Hidden input used to capture device native keyboards (iPads, Smartboards, Phones) -->
+  <input type="text" id="nativeKeyboardInput" autocomplete="off" autocapitalize="characters" spellcheck="false">
 
   <header>
     <div class="logo">
@@ -101,7 +134,7 @@
       <div class="logo-tile">L</div>
       <div class="logo-tile">E</div>
     </div>
-    <button class="reset-btn" style="padding: 6px 14px; font-size: 0.85rem;" onclick="openTeacherSetup()">🔒 Teacher Setup</button>
+    <button class="reset-btn" style="padding: 10px 18px; font-size: 0.95rem;" onclick="openTeacherSetup()">🔒 Teacher Setup</button>
   </header>
 
   <!-- TEACHER SETUP MODAL -->
@@ -137,7 +170,7 @@
     <div class="qr-modal-card">
       <button class="close-btn" onclick="closeQRModal()">✕</button>
       <div style="font-size: 0.85rem; font-weight: 800; color: #4299e1; letter-spacing: 1px;">SCAN TO PLAY</div>
-      <div style="font-size: 1.8rem; font-weight: 900; color: #1a202c; margin-top: 2px;">Wordle</div>
+      <div style="font-size: 2rem; font-weight: 900; color: #1a202c; margin-top: 2px;">Wordle</div>
       
       <img id="qrImage" class="qr-img" src="" alt="QR Code">
 
@@ -150,9 +183,9 @@
 
   <!-- GAMEPLAY AREA -->
   <main class="screen">
-    <div class="game-container">
+    <div class="game-container" id="gameContainer" onclick="focusNativeInput()">
       
-      <!-- GRID -->
+      <!-- GRID BOARD -->
       <div id="gridBoard" class="grid-board"></div>
 
       <!-- SIDE PANEL -->
@@ -178,40 +211,8 @@
 
     </div>
 
-    <!-- ALPHABETICAL KEYBOARD -->
-    <div class="keyboard-container">
-      <div class="kb-row">
-        <button class="key-btn action-key" onclick="handleKeyPress('BACKSPACE')">⌫</button>
-        <button class="key-btn" data-key="A" onclick="handleKeyPress('A')">A</button>
-        <button class="key-btn" data-key="B" onclick="handleKeyPress('B')">B</button>
-        <button class="key-btn" data-key="C" onclick="handleKeyPress('C')">C</button>
-        <button class="key-btn" data-key="D" onclick="handleKeyPress('D')">D</button>
-        <button class="key-btn" data-key="E" onclick="handleKeyPress('E')">E</button>
-        <button class="key-btn" data-key="F" onclick="handleKeyPress('F')">F</button>
-        <button class="key-btn" data-key="G" onclick="handleKeyPress('G')">G</button>
-        <button class="key-btn" data-key="H" onclick="handleKeyPress('H')">H</button>
-        <button class="key-btn" data-key="I" onclick="handleKeyPress('I')">I</button>
-        <button class="key-btn" data-key="J" onclick="handleKeyPress('J')">J</button>
-        <button class="key-btn" data-key="K" onclick="handleKeyPress('K')">K</button>
-        <button class="key-btn" data-key="L" onclick="handleKeyPress('L')">L</button>
-        <button class="key-btn" data-key="M" onclick="handleKeyPress('M')">M</button>
-        <button class="key-btn action-key" onclick="handleKeyPress('ENTER')">ENTER</button>
-      </div>
-      <div class="kb-row">
-        <button class="key-btn" data-key="N" onclick="handleKeyPress('N')">N</button>
-        <button class="key-btn" data-key="O" onclick="handleKeyPress('O')">O</button>
-        <button class="key-btn" data-key="P" onclick="handleKeyPress('P')">P</button>
-        <button class="key-btn" data-key="Q" onclick="handleKeyPress('Q')">Q</button>
-        <button class="key-btn" data-key="R" onclick="handleKeyPress('R')">R</button>
-        <button class="key-btn" data-key="S" onclick="handleKeyPress('S')">S</button>
-        <button class="key-btn" data-key="T" onclick="handleKeyPress('T')">T</button>
-        <button class="key-btn" data-key="U" onclick="handleKeyPress('U')">U</button>
-        <button class="key-btn" data-key="V" onclick="handleKeyPress('V')">V</button>
-        <button class="key-btn" data-key="W" onclick="handleKeyPress('W')">W</button>
-        <button class="key-btn" data-key="X" onclick="handleKeyPress('X')">X</button>
-        <button class="key-btn" data-key="Y" onclick="handleKeyPress('Y')">Y</button>
-        <button class="key-btn" data-key="Z" onclick="handleKeyPress('Z')">Z</button>
-      </div>
+    <div class="keyboard-prompt">
+      ⌨️ Tap board anytime to bring up screen keyboard
     </div>
   </main>
 
@@ -222,7 +223,8 @@
     let currentTile = 0;
     let gameOver = false;
 
-    // Load URL parameters if scanned from QR Code
+    const nativeInput = document.getElementById('nativeKeyboardInput');
+
     window.onload = function() {
       const urlParams = new URLSearchParams(window.location.search);
       const encodedWord = urlParams.get('w');
@@ -241,6 +243,12 @@
       }
       openTeacherSetup();
     };
+
+    function focusNativeInput() {
+      if (!gameOver && document.getElementById('setupModal').classList.contains('hidden')) {
+        nativeInput.focus();
+      }
+    }
 
     function togglePasswordVisibility() {
       const input = document.getElementById('secretInput');
@@ -295,7 +303,7 @@
       const qrImg = document.getElementById('qrImage');
       const urlDisplay = document.getElementById('urlDisplay');
 
-      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(playURL)}`;
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(playURL)}`;
       urlDisplay.textContent = playURL;
       document.getElementById('qrModal').classList.remove('hidden');
     }
@@ -330,9 +338,7 @@
         board.appendChild(rowDiv);
       }
 
-      document.querySelectorAll('.key-btn').forEach(btn => {
-        btn.classList.remove('correct', 'present', 'absent');
-      });
+      setTimeout(focusNativeInput, 300);
     }
 
     function handleKeyPress(key) {
@@ -361,13 +367,40 @@
       }
     }
 
+    /* LISTEN TO NATIVE INPUT FOR TABLETS & MOBILES */
+    nativeInput.addEventListener('input', (e) => {
+      const val = nativeInput.value.toUpperCase();
+      nativeInput.value = "";
+      for (let char of val) {
+        if (/^[A-Z]$/.test(char)) {
+          handleKeyPress(char);
+        }
+      }
+    });
+
+    nativeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace') {
+        handleKeyPress('BACKSPACE');
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        handleKeyPress('ENTER');
+        e.preventDefault();
+      }
+    });
+
+    /* DESKTOP KEYBOARD LISTENER */
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
-      if (e.key === 'Backspace') handleKeyPress('BACKSPACE');
-      else if (e.key === 'Enter') handleKeyPress('ENTER');
-      else {
+      
+      if (e.key === 'Backspace') {
+        handleKeyPress('BACKSPACE');
+      } else if (e.key === 'Enter') {
+        handleKeyPress('ENTER');
+      } else {
         const upper = e.key.toUpperCase();
-        if (/^[A-Z]$/.test(upper)) handleKeyPress(upper);
+        if (/^[A-Z]$/.test(upper)) {
+          handleKeyPress(upper);
+        }
       }
     });
 
@@ -399,22 +432,8 @@
 
       for (let i = 0; i < secretWord.length; i++) {
         const tile = document.getElementById(`tile-${currentRow}-${i}`);
-        const letter = guessArr[i];
         tile.classList.remove('active');
         tile.classList.add(rowResult[i]);
-
-        const keyBtn = document.querySelector(`.key-btn[data-key="${letter}"]`);
-        if (keyBtn) {
-          if (rowResult[i] === 'correct') {
-            keyBtn.classList.remove('present', 'absent');
-            keyBtn.classList.add('correct');
-          } else if (rowResult[i] === 'present' && !keyBtn.classList.contains('correct')) {
-            keyBtn.classList.remove('absent');
-            keyBtn.classList.add('present');
-          } else if (rowResult[i] === 'absent' && !keyBtn.classList.contains('correct') && !keyBtn.classList.contains('present')) {
-            keyBtn.classList.add('absent');
-          }
-        }
       }
 
       currentRow++;
