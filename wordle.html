@@ -47,7 +47,7 @@
     /* GAME LAYOUT */
     .game-container { display: flex; gap: 50px; align-items: center; justify-content: center; width: 100%; cursor: pointer; flex-wrap: wrap; }
     
-    /* GRID SCALING FOR DESKTOP & SMARTBOARDS */
+    /* GRID SCALING */
     .grid-board { display: flex; flex-direction: column; gap: 12px; }
     .grid-row { display: flex; gap: 12px; }
     .tile { 
@@ -116,13 +116,13 @@
       .side-panel { width: 100%; max-width: 450px; flex-direction: row; justify-content: space-between; }
       .info-card, .legend-card { flex: 1; padding: 12px; }
       .info-value { font-size: 2rem; }
-      .legend-card { display: none; } /* Hidden on mobile to save vertical space for native keyboard */
+      .legend-card { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hidden input used to capture device native keyboards (iPads, Smartboards, Phones) -->
+  <!-- Hidden input used to capture device native keyboards -->
   <input type="text" id="nativeKeyboardInput" autocomplete="off" autocapitalize="characters" spellcheck="false">
 
   <header>
@@ -378,25 +378,18 @@
       }
     });
 
-    nativeInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace') {
-        handleKeyPress('BACKSPACE');
-        e.preventDefault();
-      } else if (e.key === 'Enter') {
-        handleKeyPress('ENTER');
-        e.preventDefault();
-      }
-    });
-
-    /* DESKTOP KEYBOARD LISTENER */
+    /* KEYBOARD EVENT LISTENER FOR DESKTOP & SMARTBOARDS */
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
-      
+      if (e.target.id === 'secretInput') return;
+
       if (e.key === 'Backspace') {
         handleKeyPress('BACKSPACE');
+        e.preventDefault();
       } else if (e.key === 'Enter') {
         handleKeyPress('ENTER');
-      } else {
+        e.preventDefault();
+      } else if (e.target !== nativeInput) {
         const upper = e.key.toUpperCase();
         if (/^[A-Z]$/.test(upper)) {
           handleKeyPress(upper);
