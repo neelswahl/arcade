@@ -22,8 +22,13 @@
     .setup-title { font-size: 2rem; font-weight: 800; color: #f15a24; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .setup-subtitle { color: #a0aec0; margin-bottom: 25px; font-size: 1rem; }
     .input-label { font-size: 0.85rem; font-weight: 800; color: #a0aec0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
-    .word-input { width: 100%; padding: 16px; font-size: 1.8rem; font-weight: 800; letter-spacing: 4px; text-align: center; text-transform: uppercase; border: 3px solid #f15a24; border-radius: 16px; background-color: #fff8f5; color: #4a5568; outline: none; margin-bottom: 25px; }
     
+    /* INPUT & EYE TOGGLE BUTTON */
+    .input-wrapper { position: relative; width: 100%; margin-bottom: 25px; }
+    .word-input { width: 100%; padding: 16px 55px 16px 20px; font-size: 1.8rem; font-weight: 800; letter-spacing: 4px; text-align: center; text-transform: uppercase; border: 3px solid #f15a24; border-radius: 16px; background-color: #fff8f5; color: #4a5568; outline: none; }
+    .toggle-vis-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; user-select: none; opacity: 0.7; transition: opacity 0.2s; }
+    .toggle-vis-btn:hover { opacity: 1; }
+
     .guesses-selector { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
     .guess-btn { flex: 1; padding: 14px 0; font-size: 1.3rem; font-weight: 800; border-radius: 14px; border: 2px solid #edf2f7; background: #f7fafc; color: #4a5568; cursor: pointer; transition: all 0.2s; }
     .guess-btn.active { background: #f15a24; color: #fff; border-color: #f15a24; box-shadow: 0 4px 12px rgba(241,90,36,0.3); }
@@ -106,7 +111,10 @@
       <div class="setup-subtitle">Choose your options, then press Start!</div>
 
       <div class="input-label">Secret Word</div>
-      <input type="password" id="secretInput" class="word-input" placeholder="TYPE WORD" autocomplete="off" onfocus="this.type='text'" onblur="this.type='password'">
+      <div class="input-wrapper">
+        <input type="text" id="secretInput" class="word-input" placeholder="TYPE WORD" autocomplete="off">
+        <button type="button" id="toggleVisibilityBtn" class="toggle-vis-btn" onclick="togglePasswordVisibility()" title="Show/Hide Word">👁️</button>
+      </div>
 
       <div class="input-label">Number of Guesses</div>
       <div class="guesses-selector">
@@ -234,6 +242,18 @@
       openTeacherSetup();
     };
 
+    function togglePasswordVisibility() {
+      const input = document.getElementById('secretInput');
+      const btn = document.getElementById('toggleVisibilityBtn');
+      if (input.type === 'text') {
+        input.type = 'password';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'text';
+        btn.textContent = '👁️';
+      }
+    }
+
     function openTeacherSetup() {
       document.getElementById('setupModal').classList.remove('hidden');
     }
@@ -263,7 +283,7 @@
         alert("Please enter a secret word first!");
         return null;
       }
-      const encoded = btoa(input); // Encodes word so students cannot read it in address bar
+      const encoded = btoa(input);
       const baseURL = window.location.href.split('?')[0];
       return `${baseURL}?w=${encoded}&g=${maxGuesses}`;
     }
@@ -341,7 +361,6 @@
       }
     }
 
-    // Physical Keyboard Support
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
       if (e.key === 'Backspace') handleKeyPress('BACKSPACE');
@@ -362,7 +381,6 @@
       const guessArr = currentGuess.split('');
       const rowResult = Array(secretWord.length).fill('absent');
 
-      // Check correct positions
       for (let i = 0; i < secretWord.length; i++) {
         if (guessArr[i] === secretArr[i]) {
           rowResult[i] = 'correct';
@@ -370,7 +388,6 @@
         }
       }
 
-      // Check present positions
       for (let i = 0; i < secretWord.length; i++) {
         if (rowResult[i] === 'correct') continue;
         const index = secretArr.indexOf(guessArr[i]);
@@ -380,7 +397,6 @@
         }
       }
 
-      // Apply styling
       for (let i = 0; i < secretWord.length; i++) {
         const tile = document.getElementById(`tile-${currentRow}-${i}`);
         const letter = guessArr[i];
