@@ -6,206 +6,350 @@
   <title>Wheel of Fortune</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: linear-gradient(135deg, #7928ca 0%, #2a8af6 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; overflow-x: hidden; }
+    
+    body {
+      background: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      user-select: none;
+    }
 
-    /* HEADER */
-    header { width: 100%; padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { display: flex; align-items: center; gap: 10px; font-size: 2.2rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 4px 0px rgba(0,0,0,0.3); }
-
-    .hidden { display: none !important; }
-
-    /* TEACHER SETUP MODAL */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-    .setup-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 28px; padding: 35px; width: 100%; max-width: 550px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .setup-title { font-size: 2.5rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 2px 0 rgba(0,0,0,0.2); margin-bottom: 6px; }
-    .setup-subtitle { color: #e2e8f0; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600; }
-    .input-label { font-size: 0.95rem; font-weight: 800; color: #67e8f9; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
-
-    /* INPUT WITH EYE TOGGLE */
-    .input-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
-    .phrase-input { width: 100%; padding: 16px 55px 16px 20px; font-size: 1.2rem; font-weight: 700; border: 3px solid rgba(255,255,255,0.4); border-radius: 16px; background-color: rgba(24, 28, 79, 0.85); color: #fff; outline: none; }
-    .phrase-input::placeholder { color: #94a3b8; }
-    .toggle-vis-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.5rem; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
-    .toggle-vis-btn:hover { opacity: 1; }
-
-    select.phrase-input { appearance: none; cursor: pointer; padding-right: 20px; }
-    select.phrase-input option { background-color: #1e1b4b; color: #fff; }
-
-    .action-btn-group { display: flex; gap: 12px; margin-top: 10px; }
-    .start-btn { flex: 2; background: #ffdf00; color: #1e1b4b; border: none; padding: 16px; font-size: 1.3rem; font-weight: 900; border-radius: 16px; cursor: pointer; transition: transform 0.1s, background 0.2s; box-shadow: 0 6px 0 #b49d00; }
-    .start-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b49d00; }
-    .qr-option-btn { flex: 1; background: rgba(255,255,255,0.2); color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 16px; font-size: 1.1rem; font-weight: 800; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-    /* QR MODAL */
-    .qr-modal-card { background: #fff; color: #1e293b; border-radius: 28px; padding: 35px; width: 100%; max-width: 420px; text-align: center; position: relative; }
-    .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
-    .qr-img { width: 220px; height: 220px; margin: 15px 0; border: 8px solid #f8fafc; border-radius: 16px; }
-
-    /* MAIN GAME SCREEN */
-    .game-layout { display: flex; flex-direction: column; width: 100%; max-width: 1250px; padding: 10px 20px 20px; gap: 15px; align-items: center; }
-
-    /* VISUAL CATEGORY BADGE */
-    .category-badge { 
-      background: rgba(255, 223, 0, 0.2); 
-      border: 2px solid #ffdf00; 
-      color: #ffdf00; 
-      padding: 8px 24px; 
-      border-radius: 30px; 
-      font-weight: 900; 
-      font-size: 1.2rem; 
-      letter-spacing: 2px; 
-      text-transform: uppercase; 
-      box-shadow: 0 0 15px rgba(255, 223, 0, 0.3); 
+    /* HEADER BAR */
+    header {
+      width: 100%;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffdf00;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       gap: 8px;
     }
+    .setup-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: background 0.2s;
+    }
+    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-    /* PUZZLE BOARD TILES */
-    .puzzle-board { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: 100%; max-width: 950px; min-height: 140px; padding: 20px; background: rgba(15, 23, 42, 0.4); border-radius: 20px; border: 2px solid rgba(255, 255, 255, 0.15); }
-    .tile-card { width: clamp(40px, 4.5vw, 60px); height: clamp(52px, 5.8vw, 75px); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: clamp(1.6rem, 2.8vw, 2.5rem); font-weight: 900; text-transform: uppercase; user-select: none; }
-    .tile-card.letter-hidden { background: #1e1b4b; border: 3px solid #4338ca; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-    .tile-card.letter-revealed { background: #fff; color: #1e1b4b; border: 3px solid #ffdf00; box-shadow: 0 4px 12px rgba(255,223,0,0.4); animation: flip 0.4s ease-out; }
-    .tile-card.space { background: transparent; border: none; }
+    /* CATEGORY BADGE */
+    .category-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .category-badge {
+      background: rgba(255, 223, 0, 0.25);
+      border: 2px solid #ffdf00;
+      color: #ffdf00;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(255, 223, 0, 0.3);
+    }
 
-    @keyframes flip { 0% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
+    /* MULTI-ROW PUZZLE BOARD */
+    .board-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+    }
+    .puzzle-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .tile-card {
+      width: clamp(38px, 4.2vw, 55px);
+      height: clamp(50px, 5.5vw, 70px);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .tile-card.letter-hidden {
+      background: #18182c;
+      border: 2px solid #2a3282;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+    }
+    .tile-card.letter-revealed {
+      background: #ffffff;
+      color: #0f172a;
+      border: 2px solid #ffdf00;
+      box-shadow: 0 0 12px rgba(255, 223, 0, 0.5);
+      animation: flipTile 0.4s ease-out;
+    }
+    .tile-card.space {
+      visibility: hidden;
+      width: clamp(20px, 2vw, 30px);
+    }
 
-    /* CENTER GAME PANEL */
-    .center-panel { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    
-    .left-controls { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 12px; }
-    .status-text { font-size: 1.4rem; font-weight: 900; color: #ffdf00; text-align: center; text-shadow: 1px 2px 0 rgba(0,0,0,0.4); }
-    .turn-badge { padding: 14px; background: #ef4444; color: #fff; font-size: 1.2rem; font-weight: 800; border-radius: 30px; text-align: center; border: 2px solid rgba(255,255,255,0.3); }
-    .control-btn { padding: 14px; font-size: 1.1rem; font-weight: 800; border-radius: 30px; border: none; cursor: pointer; transition: all 0.2s; text-align: center; }
-    .btn-vowel { background: rgba(255, 255, 255, 0.25); color: #fff; border: 2px solid rgba(255,255,255,0.4); }
-    .btn-solve { background: #22c55e; color: #fff; font-size: 1.2rem; box-shadow: 0 4px 0 #15803d; }
+    @keyframes flipTile { 0% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
 
-    /* WHEEL CANVAS CONTAINER */
-    .wheel-container { position: relative; width: 320px; height: 320px; display: flex; align-items: center; justify-content: center; }
-    #wheelCanvas { width: 300px; height: 300px; border-radius: 50%; box-shadow: 0 0 25px rgba(0,0,0,0.5), 0 0 0 8px rgba(255,255,255,0.2); cursor: pointer; transition: transform 4s cubic-bezier(0.15, 0.99, 0.35, 1); }
-    .pointer { position: absolute; right: 0px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-right: 26px solid #ef4444; filter: drop-shadow(-2px 2px 4px rgba(0,0,0,0.4)); z-index: 10; }
+    /* DASHBOARD PANEL (CONTROLS - WHEEL - SCOREBOARD) */
+    .dashboard-panel {
+      display: flex;
+      width: 100%;
+      height: 240px;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(10px);
+      border-top: 2px solid rgba(255, 255, 255, 0.15);
+      align-items: center;
+      justify-content: space-between;
+    }
 
-    /* SCOREBOARD */
-    .scoreboard { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 12px; }
-    .team-card { padding: 18px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.5); border: 3px solid transparent; transition: all 0.3s; }
-    .team-card.active-team { border-color: #ffdf00; transform: scale(1.03); box-shadow: 0 0 20px rgba(255,223,0,0.4); }
-    .team-1 { background: rgba(220, 38, 38, 0.85); }
-    .team-2 { background: rgba(37, 99, 235, 0.85); }
-    .team-label { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; opacity: 0.9; }
-    .team-score { font-size: 2.8rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
+    /* LEFT CONTROLS */
+    .left-controls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+    }
+    .status-text {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #ffdf00;
+      text-shadow: 1px 2px 0 rgba(0,0,0,0.5);
+      text-align: center;
+      min-height: 28px;
+    }
+    .turn-badge {
+      width: 80%;
+      max-width: 220px;
+      padding: 10px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    }
+    .ctrl-btn {
+      width: 80%;
+      max-width: 220px;
+      padding: 10px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.1s;
+    }
+    .ctrl-btn:active { transform: scale(0.96); }
+    .btn-vowel { background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+    .btn-solve { background: #22c55e; color: #fff; box-shadow: 0 4px 0 #15803d; }
 
-    /* KEYBOARD */
-    .keyboard-grid { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 1000px; }
-    .kb-row { display: flex; justify-content: center; gap: 6px; }
-    .key-btn { flex: 1; max-width: 48px; height: 48px; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); border-radius: 10px; color: #fff; font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: all 0.15s; }
-    .key-btn:hover:not(:disabled) { background: #ffdf00; color: #1e1b4b; border-color: #ffdf00; }
-    .key-btn:disabled { opacity: 0.3; cursor: not-allowed; background: rgba(0,0,0,0.3); border-color: transparent; }
-    .key-btn.vowel { color: #67e8f9; }
+    /* CENTER WHEEL */
+    .wheel-wrapper {
+      position: relative;
+      width: 210px;
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #wheelCanvas {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6), 0 0 0 6px rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: transform 4s cubic-bezier(0.15, 0.99, 0.35, 1);
+    }
+    .pointer {
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0; height: 0;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-right: 22px solid #ef4444;
+      filter: drop-shadow(-2px 2px 3px rgba(0,0,0,0.5));
+      z-index: 10;
+    }
+
+    /* RIGHT SCOREBOARD */
+    .right-scoreboard {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .team-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid transparent;
+      transition: border 0.2s;
+    }
+    .team-box.team-1 { background: #dc2626; }
+    .team-box.team-2 { background: #1d4ed8; }
+    .team-box.active { border-color: #ffdf00; box-shadow: inset 0 0 15px rgba(255,223,0,0.5); }
+    .team-name { font-size: 0.85rem; font-weight: 900; opacity: 0.9; letter-spacing: 1px; }
+    .team-score { font-size: 2.2rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 2px 0 rgba(0,0,0,0.4); }
+
+    /* FULL-WIDTH BOTTOM KEYBOARD */
+    .keyboard-bar {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+    .kb-row {
+      display: flex;
+      width: 100%;
+      gap: 4px;
+    }
+    .key-btn {
+      flex: 1;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s;
+      touch-action: manipulation;
+    }
+    .key-btn:active:not(:disabled) { background: #ffdf00; color: #000; }
+    .key-btn:disabled { opacity: 0.25; cursor: not-allowed; background: rgba(0,0,0,0.4); border-color: transparent; }
+
+    /* MODALS */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .setup-card { background: rgba(30, 27, 75, 0.95); border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; width: 100%; max-width: 500px; text-align: center; }
+    .setup-title { font-size: 2.2rem; font-weight: 900; color: #ffdf00; margin-bottom: 6px; }
+    .input-label { font-size: 0.85rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 12px 0 6px; text-align: left; }
+    .phrase-input { width: 100%; padding: 14px; font-size: 1.1rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); background: #0f172a; color: #fff; outline: none; }
+    .start-btn { width: 100%; background: #ffdf00; color: #000; border: none; padding: 14px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; margin-top: 18px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; }
+    .hidden { display: none !important; }
 
     @media (max-width: 768px) {
-      .center-panel { flex-direction: column; }
-      .left-controls, .scoreboard { width: 100%; }
-      .key-btn { height: 40px; font-size: 1rem; }
+      .dashboard-panel { height: auto; flex-direction: column; padding: 10px; gap: 10px; }
+      .left-controls, .right-scoreboard { width: 100%; }
+      .right-scoreboard { flex-direction: row; height: 70px; }
+      .key-btn { height: 42px; font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HIDDEN NATIVE INPUT FOR MOBILE/IPAD -->
-  <input type="text" id="nativeInput" style="position:absolute; opacity:0; top:-1000px;" autocomplete="off" autocapitalize="characters">
-
+  <!-- HEADER -->
   <header>
     <div class="logo">🎡 Wheel of Fortune</div>
-    <button class="control-btn btn-vowel" style="padding: 10px 18px;" onclick="openSetupModal()">🔒 Teacher Setup</button>
+    <button class="setup-btn" onclick="openSetupModal()">🔒 Teacher Setup</button>
   </header>
+
+  <!-- CATEGORY BADGE -->
+  <div class="category-container">
+    <div class="category-badge" id="categoryBadge">⚡ CATEGORY: PHRASE</div>
+  </div>
+
+  <!-- MULTI-ROW PUZZLE BOARD -->
+  <main class="board-container" id="boardContainer"></main>
+
+  <!-- DASHBOARD CONTROLS -->
+  <section class="dashboard-panel">
+    <!-- LEFT CONTROLS -->
+    <div class="left-controls">
+      <div class="status-text" id="statusText">Click the wheel to spin!</div>
+      <div class="turn-badge" id="turnBadge">🔴 Team 1's Turn</div>
+      <button class="ctrl-btn btn-vowel" onclick="buyVowel()">💳 Buy Vowel (100 pts)</button>
+      <button class="ctrl-btn btn-solve" onclick="promptSolve()">✅ SOLVE!</button>
+    </div>
+
+    <!-- CENTER WHEEL -->
+    <div class="wheel-wrapper" onclick="spinWheel()">
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="200" height="200"></canvas>
+    </div>
+
+    <!-- RIGHT SCOREBOARD -->
+    <div class="right-scoreboard">
+      <div class="team-box team-1 active" id="team1Box">
+        <div class="team-name">● TEAM 1</div>
+        <div class="team-score" id="score1">0</div>
+      </div>
+      <div class="team-box team-2" id="team2Box">
+        <div class="team-name">● TEAM 2</div>
+        <div class="team-score" id="score2">0</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL-WIDTH BOTTOM KEYBOARD (TABLET & TOUCH FRIENDLY) -->
+  <footer class="keyboard-bar" id="keyboardBar"></footer>
 
   <!-- TEACHER SETUP MODAL -->
   <div id="setupModal" class="modal-overlay">
     <div class="setup-card">
-      <div class="setup-title">🎡 Wheel of Fortune</div>
-      <div class="setup-subtitle">Set your phrase for classroom or individual play!</div>
-
-      <div class="input-label">Select Category Tag</div>
-      <select id="categorySelect" class="phrase-input" style="margin-bottom: 15px;" onchange="handleCategoryChange(this.value)">
-        <option value="PHRASE">💬 PHRASE</option>
-        <option value="THING">📦 THING</option>
-        <option value="PERSON / CHARACTER">👤 PERSON / CHARACTER</option>
-        <option value="PLACE">📍 PLACE</option>
-        <option value="MOVIE / TV SHOW">🎬 MOVIE / TV SHOW</option>
-        <option value="FOOD & DRINK">🍕 FOOD & DRINK</option>
-        <option value="CUSTOM">✏️ CUSTOM CATEGORY...</option>
-      </select>
-
-      <input type="text" id="customCategoryInput" class="phrase-input hidden" placeholder="Type custom category tag..." style="margin-bottom: 20px;" autocomplete="off">
-
-      <div class="input-label">Enter Secret Phrase</div>
-      <div class="input-wrapper">
-        <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase here..." autocomplete="off">
-        <button type="button" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
-      </div>
-
-      <div class="action-btn-group">
-        <button class="start-btn" onclick="startGameFromSetup()">▶ Start Game!</button>
-        <button class="qr-option-btn" onclick="showQRCodeModal()">📱 QR Code</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- QR CODE MODAL -->
-  <div id="qrModal" class="modal-overlay hidden">
-    <div class="qr-modal-card">
-      <button class="close-btn" onclick="closeQRModal()">✕</button>
-      <div style="font-size: 0.85rem; font-weight: 800; color: #2563eb; letter-spacing: 1px;">SCAN TO PLAY ON IPAD</div>
-      <div style="font-size: 1.8rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
+      <div class="setup-title">🎡 Wheel Setup</div>
       
-      <img id="qrImage" class="qr-img" src="" alt="QR Code">
-      <p style="font-weight: 700; color: #475569;">Scan with iPad/Phone Camera</p>
+      <div class="input-label">Category Tag</div>
+      <select id="categorySelect" class="phrase-input" onchange="handleCategoryChange(this.value)">
+        <option value="PHRASE">PHRASE</option>
+        <option value="THING">THING</option>
+        <option value="PERSON / CHARACTER">PERSON / CHARACTER</option>
+        <option value="PLACE">PLACE</option>
+        <option value="MOVIE / TV SHOW">MOVIE / TV SHOW</option>
+        <option value="FOOD & DRINK">FOOD & DRINK</option>
+        <option value="CUSTOM">CUSTOM CATEGORY...</option>
+      </select>
+      <input type="text" id="customCategoryInput" class="phrase-input hidden" placeholder="Type custom category..." style="margin-top: 8px;">
+
+      <div class="input-label">Secret Phrase</div>
+      <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
+
+      <button class="start-btn" onclick="startGameFromSetup()">▶ START GAME</button>
     </div>
   </div>
-
-  <!-- GAMEPLAY LAYOUT -->
-  <main class="game-layout">
-    <!-- VISUAL CATEGORY BADGE -->
-    <div class="category-badge" id="categoryBadge">🏷️ CATEGORY: PHRASE</div>
-
-    <!-- PUZZLE BOARD -->
-    <div id="puzzleBoard" class="puzzle-board"></div>
-
-    <!-- CENTER GAMEPLAY AREA -->
-    <div class="center-panel">
-      <!-- LEFT CONTROLS -->
-      <div class="left-controls">
-        <div class="status-text" id="statusText">Click the wheel to spin!</div>
-        <div class="turn-badge" id="turnBadge">🔴 Team 1's Turn</div>
-        <button class="control-btn btn-vowel" id="buyVowelBtn" onclick="buyVowel()">💳 Buy Vowel (100 pts)</button>
-        <button class="control-btn btn-solve" onclick="promptSolve()">✅ SOLVE!</button>
-      </div>
-
-      <!-- CENTER WHEEL -->
-      <div class="wheel-container" onclick="spinWheel()">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="300" height="300"></canvas>
-      </div>
-
-      <!-- RIGHT SCOREBOARD -->
-      <div class="scoreboard">
-        <div class="team-card team-1 active-team" id="teamCard1">
-          <div class="team-label">● TEAM 1</div>
-          <div class="team-score" id="score1">0</div>
-        </div>
-        <div class="team-card team-2" id="teamCard2">
-          <div class="team-label">● TEAM 2</div>
-          <div class="team-score" id="score2">0</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ON-SCREEN KEYBOARD -->
-    <div class="keyboard-grid" id="keyboardGrid"></div>
-  </main>
 
   <script>
-    let secretPhrase = "";
+    let secretPhrase = "CLASSROOM ARCADE";
     let categoryTag = "PHRASE";
     let revealedLetters = new Set();
     let currentTeam = 1;
@@ -247,77 +391,31 @@
           document.getElementById('setupModal').classList.add('hidden');
           initGame();
           return;
-        } catch (e) {
-          console.error("Invalid QR link");
-        }
+        } catch (e) {}
       }
       openSetupModal();
     };
-
-    function handleCategoryChange(val) {
-      const customInput = document.getElementById('customCategoryInput');
-      if (val === 'CUSTOM') {
-        customInput.classList.remove('hidden');
-        customInput.focus();
-      } else {
-        customInput.classList.add('hidden');
-      }
-    }
-
-    function togglePhraseVisibility() {
-      const input = document.getElementById('phraseInput');
-      const btn = event.target;
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.textContent = '🙈';
-      } else {
-        input.type = 'password';
-        btn.textContent = '👁️';
-      }
-    }
 
     function openSetupModal() {
       document.getElementById('setupModal').classList.remove('hidden');
     }
 
-    function getSelectedCategory() {
-      const selectVal = document.getElementById('categorySelect').value;
-      if (selectVal === 'CUSTOM') {
-        const customVal = document.getElementById('customCategoryInput').value.trim().toUpperCase();
-        return customVal || "PUZZLE";
-      }
-      return selectVal;
+    function handleCategoryChange(val) {
+      document.getElementById('customCategoryInput').classList.toggle('hidden', val !== 'CUSTOM');
     }
 
     function startGameFromSetup() {
       const input = document.getElementById('phraseInput').value.trim().toUpperCase();
       if (!input || !/^[A-Z\s]+$/.test(input)) {
-        alert("Please enter a valid phrase (letters and spaces only).");
+        alert("Please enter a phrase using letters and spaces only!");
         return;
       }
       secretPhrase = input;
-      categoryTag = getSelectedCategory();
+      const catSelect = document.getElementById('categorySelect').value;
+      categoryTag = catSelect === 'CUSTOM' ? (document.getElementById('customCategoryInput').value.trim().toUpperCase() || "PUZZLE") : catSelect;
+      
       document.getElementById('setupModal').classList.add('hidden');
       initGame();
-    }
-
-    function showQRCodeModal() {
-      const input = document.getElementById('phraseInput').value.trim().toUpperCase();
-      if (!input) {
-        alert("Please enter a phrase first!");
-        return;
-      }
-      const cat = getSelectedCategory();
-      const encodedPhrase = btoa(input);
-      const encodedCat = btoa(cat);
-      const playURL = `${window.location.href.split('?')[0]}?p=${encodedPhrase}&c=${encodedCat}`;
-      const qrImg = document.getElementById('qrImage');
-      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(playURL)}`;
-      document.getElementById('qrModal').classList.remove('hidden');
-    }
-
-    function closeQRModal() {
-      document.getElementById('qrModal').classList.add('hidden');
     }
 
     function initGame() {
@@ -327,70 +425,92 @@
       canGuessConsonant = false;
       buyingVowel = false;
 
-      document.getElementById('categoryBadge').textContent = `🏷️ CATEGORY: ${categoryTag}`;
-
+      document.getElementById('categoryBadge').textContent = `⚡ CATEGORY: ${categoryTag}`;
       updateScoreboard();
       renderBoard();
       resetKeyboard();
       document.getElementById('statusText').textContent = "Click the wheel to spin!";
     }
 
+    /* MULTI-ROW WORD WRAPPING LOGIC */
     function renderBoard() {
-      const board = document.getElementById('puzzleBoard');
-      board.innerHTML = "";
+      const container = document.getElementById('boardContainer');
+      container.innerHTML = "";
 
-      for (let char of secretPhrase) {
-        const card = document.createElement('div');
-        if (char === ' ') {
-          card.className = 'tile-card space';
-        } else if (revealedLetters.has(char)) {
-          card.className = 'tile-card letter-revealed';
-          card.textContent = char;
+      const words = secretPhrase.split(' ');
+      const rows = [];
+      let currentRow = [];
+      let currentLen = 0;
+      const maxRowLen = 12;
+
+      words.forEach(word => {
+        if (currentLen + word.length + (currentRow.length ? 1 : 0) <= maxRowLen) {
+          currentRow.push(word);
+          currentLen += word.length + (currentRow.length > 1 ? 1 : 0);
         } else {
-          card.className = 'tile-card letter-hidden';
+          if (currentRow.length) rows.push(currentRow.join(' '));
+          currentRow = [word];
+          currentLen = word.length;
         }
-        board.appendChild(card);
-      }
+      });
+      if (currentRow.length) rows.push(currentRow.join(' '));
+
+      rows.forEach(rowText => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'puzzle-row';
+
+        for (let char of rowText) {
+          const card = document.createElement('div');
+          if (char === ' ') {
+            card.className = 'tile-card space';
+          } else if (revealedLetters.has(char)) {
+            card.className = 'tile-card letter-revealed';
+            card.textContent = char;
+          } else {
+            card.className = 'tile-card letter-hidden';
+          }
+          rowDiv.appendChild(card);
+        }
+        container.appendChild(rowDiv);
+      });
     }
 
+    /* WHEEL CANVAS */
     function drawWheel() {
       const canvas = document.getElementById('wheelCanvas');
       const ctx = canvas.getContext('2d');
       const numSlices = slices.length;
       const arc = (2 * Math.PI) / numSlices;
 
-      ctx.clearRect(0, 0, 300, 300);
+      ctx.clearRect(0, 0, 200, 200);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = currentAngle + i * arc;
         ctx.beginPath();
         ctx.fillStyle = slices[i].color;
-        ctx.moveTo(150, 150);
-        ctx.arc(150, 150, 145, angle, angle + arc);
-        ctx.lineTo(150, 150);
+        ctx.moveTo(100, 100);
+        ctx.arc(100, 100, 95, angle, angle + arc);
+        ctx.lineTo(100, 100);
         ctx.fill();
 
-        ctx.strokeStyle = "rgba(255,255,255,0.4)";
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgba(255,255,255,0.3)";
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
         ctx.save();
-        ctx.translate(150, 150);
+        ctx.translate(100, 100);
         ctx.rotate(angle + arc / 2);
         ctx.textAlign = "right";
         ctx.fillStyle = slices[i].textColor || "#ffffff";
-        ctx.font = "bold 16px 'Segoe UI', sans-serif";
-        ctx.fillText(slices[i].label, 130, 6);
+        ctx.font = "bold 13px 'Segoe UI', sans-serif";
+        ctx.fillText(slices[i].label, 85, 4);
         ctx.restore();
       }
 
       ctx.beginPath();
-      ctx.arc(150, 150, 24, 0, 2 * Math.PI);
+      ctx.arc(100, 100, 16, 0, 2 * Math.PI);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
-      ctx.strokeStyle = "#cbd5e1";
-      ctx.lineWidth = 4;
-      ctx.stroke();
     }
 
     function spinWheel() {
@@ -437,18 +557,19 @@
       }
     }
 
+    /* FULL WIDTH KEYBOARD */
     function buildKeyboard() {
-      const kb = document.getElementById('keyboardGrid');
+      const kb = document.getElementById('keyboardBar');
       kb.innerHTML = "";
-      const rows = ["ABCDEFGHIJKLM", "NOPQRSTUVWXYZ"];
+      const row1 = "ABCDEFGHIJKLM";
+      const row2 = "NOPQRSTUVWXYZ";
 
-      rows.forEach(rowStr => {
+      [row1, row2].forEach(rowStr => {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'kb-row';
         for (let char of rowStr) {
           const btn = document.createElement('button');
           btn.className = 'key-btn';
-          if ('AEIOU'.includes(char)) btn.classList.add('vowel');
           btn.textContent = char;
           btn.id = `key-${char}`;
           btn.onclick = () => handleLetterGuess(char);
@@ -469,7 +590,7 @@
 
       if (buyingVowel) {
         if (!isVowel) {
-          alert("Please select a Vowel (A, E, I, O, U)!");
+          alert("Please pick a Vowel (A, E, I, O, U)!");
           return;
         }
         buyingVowel = false;
@@ -478,7 +599,7 @@
       }
 
       if (!canGuessConsonant) {
-        alert("Spin the wheel first before guessing a consonant!");
+        alert("Spin the wheel first!");
         return;
       }
 
@@ -512,7 +633,7 @@
     function buyVowel() {
       if (isSpinning || canGuessConsonant || buyingVowel) return;
       if (scores[currentTeam] < 100) {
-        alert("You need at least 100 points to buy a vowel!");
+        alert("You need 100 points to buy a vowel!");
         return;
       }
       scores[currentTeam] -= 100;
@@ -531,25 +652,26 @@
     function updateScoreboard() {
       document.getElementById('score1').textContent = scores[1];
       document.getElementById('score2').textContent = scores[2];
+      
       const badge = document.getElementById('turnBadge');
       badge.textContent = currentTeam === 1 ? "🔴 Team 1's Turn" : "🔵 Team 2's Turn";
-      badge.style.background = currentTeam === 1 ? "#ef4444" : "#2563eb";
+      badge.style.background = currentTeam === 1 ? "#ef4444" : "#1d4ed8";
 
-      document.getElementById('teamCard1').classList.toggle('active-team', currentTeam === 1);
-      document.getElementById('teamCard2').classList.toggle('active-team', currentTeam === 2);
+      document.getElementById('team1Box').classList.toggle('active', currentTeam === 1);
+      document.getElementById('team2Box').classList.toggle('active', currentTeam === 2);
     }
 
     function promptSolve() {
-      const guess = prompt("Enter your full solution guess:")?.toUpperCase().trim();
+      const guess = prompt("Enter your solution guess:")?.toUpperCase().trim();
       if (!guess) return;
 
       if (guess === secretPhrase) {
         for (let char of secretPhrase) if (char !== ' ') revealedLetters.add(char);
         renderBoard();
-        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED THE PUZZLE!`;
-        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with ${scores[currentTeam]} points!`), 300);
+        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED IT!`;
+        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with $${scores[currentTeam]}!`), 300);
       } else {
-        alert("Incorrect solution!");
+        alert("Incorrect guess!");
         switchTurn();
       }
     }
@@ -557,16 +679,18 @@
     function checkWin() {
       const allRevealed = secretPhrase.split('').every(c => c === ' ' || revealedLetters.has(c));
       if (allRevealed) {
-        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED THE PUZZLE!`;
-        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with ${scores[currentTeam]} points!`), 300);
+        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED IT!`;
+        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with $${scores[currentTeam]}!`), 300);
       }
     }
 
+    /* HARDWARE KEYBOARD LISTENER (IPAD MAGIC KEYBOARD / PC) */
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
       const key = e.key.toUpperCase();
       if (/^[A-Z]$/.test(key)) {
-        handleLetterGuess(key);
+        const btn = document.getElementById(`key-${key}`);
+        if (btn && !btn.disabled) handleLetterGuess(key);
       }
     });
   </script>
