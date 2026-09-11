@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     
     body {
-      background: radial-gradient(circle at center, #4c1d95 0%, #0f172a 100%);
+      background: radial-gradient(circle at center, #3b0764 0%, #0f172a 100%);
       color: #fff;
       height: 100vh;
       display: flex;
@@ -16,61 +16,10 @@
       justify-content: space-between;
       overflow: hidden;
       user-select: none;
+      position: relative;
     }
 
-    /* HEADER BAR */
-    header {
-      width: 100%;
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-    }
-    .logo {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #ffdf00;
-      text-shadow: 0 0 12px rgba(255, 223, 0, 0.4), 2px 2px 0 #000;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .setup-btn {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: 1rem;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
-    }
-    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); }
-
-    /* CATEGORY BADGE */
-    .category-container {
-      display: flex;
-      justify-content: center;
-      margin-top: -5px;
-      margin-bottom: 5px;
-    }
-    .category-badge {
-      background: rgba(255, 223, 0, 0.2);
-      border: 2px solid #ffdf00;
-      color: #ffdf00;
-      padding: 8px 26px;
-      border-radius: 30px;
-      font-weight: 900;
-      font-size: 1.25rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(255, 223, 0, 0.3);
-    }
-
-    /* MULTI-ROW PUZZLE BOARD */
+    /* MULTI-ROW PUZZLE BOARD AREA */
     .board-container {
       flex: 1;
       display: flex;
@@ -78,7 +27,7 @@
       justify-content: center;
       align-items: center;
       gap: 12px;
-      padding: 10px 20px;
+      padding: 15px 20px;
     }
     .puzzle-row {
       display: flex;
@@ -86,16 +35,16 @@
       justify-content: center;
     }
     .tile-card {
-      width: clamp(45px, 5.2vw, 68px);
-      height: clamp(58px, 6.8vw, 88px);
+      width: clamp(48px, 5.5vw, 72px);
+      height: clamp(62px, 7vw, 92px);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
       font-weight: 900;
       text-transform: uppercase;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
     }
     .tile-card.letter-hidden {
       background: #0f172a;
@@ -116,11 +65,11 @@
 
     @keyframes flipTile { 0% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
 
-    /* DASHBOARD PANEL */
+    /* CENTER DASHBOARD PANEL */
     .dashboard-panel {
       display: flex;
       width: 100%;
-      height: 250px;
+      height: 330px; /* Taller area for large wheel */
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(12px);
       border-top: 3px solid rgba(255, 255, 255, 0.2);
@@ -135,16 +84,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       padding: 10px;
     }
     .status-text {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 900;
       color: #ffdf00;
       text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       text-align: center;
-      min-height: 32px;
+      min-height: 36px;
     }
     .turn-badge {
       width: 85%;
@@ -152,7 +101,7 @@
       padding: 12px;
       background: #ef4444;
       color: #fff;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 900;
       border-radius: 30px;
       text-align: center;
@@ -175,32 +124,32 @@
     .btn-vowel { background: #8b5cf6; color: #fff; box-shadow: 0 4px 0 #6d28d9; border: 2px solid #a78bfa; }
     .btn-solve { background: #22c55e; color: #fff; box-shadow: 0 4px 0 #15803d; border: 2px solid #4ade80; }
 
-    /* CENTER WHEEL */
+    /* CENTER WHEEL (LARGE SIZE) */
     .wheel-wrapper {
       position: relative;
-      width: 220px;
-      height: 220px;
+      width: 320px;
+      height: 320px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     #wheelCanvas {
-      width: 210px;
-      height: 210px;
+      width: 310px;
+      height: 310px;
       border-radius: 50%;
-      box-shadow: 0 0 25px rgba(0,0,0,0.8), 0 0 0 8px rgba(255,255,255,0.25);
+      box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 0 8px rgba(255,255,255,0.25);
       cursor: pointer;
       transition: transform 4s cubic-bezier(0.15, 0.99, 0.35, 1);
     }
     .pointer {
       position: absolute;
-      right: -4px;
+      right: -8px;
       top: 50%;
       transform: translateY(-50%);
       width: 0; height: 0;
-      border-top: 16px solid transparent;
-      border-bottom: 16px solid transparent;
-      border-right: 26px solid #ef4444;
+      border-top: 18px solid transparent;
+      border-bottom: 18px solid transparent;
+      border-right: 30px solid #ef4444;
       filter: drop-shadow(-3px 2px 4px rgba(0,0,0,0.6));
       z-index: 10;
     }
@@ -224,14 +173,14 @@
     .team-box.team-1 { background: #dc2626; }
     .team-box.team-2 { background: #2563eb; }
     .team-box.active { border-color: #ffdf00; box-shadow: inset 0 0 20px rgba(255, 223, 0, 0.6); }
-    .team-name { font-size: 1.05rem; font-weight: 900; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-    .team-score { font-size: 3rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
+    .team-name { font-size: 1.1rem; font-weight: 900; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+    .team-score { font-size: 3.5rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
 
     /* FULL-WIDTH BOTTOM KEYBOARD */
     .keyboard-bar {
       width: 100%;
       background: rgba(15, 23, 42, 0.95);
-      padding: 10px 14px;
+      padding: 10px 14px 10px 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -261,6 +210,33 @@
     .key-btn:hover:not(:disabled) { background: #ffdf00; color: #000; border-color: #ffdf00; }
     .key-btn:disabled { opacity: 0.2; cursor: not-allowed; background: rgba(0,0,0,0.5); border-color: transparent; }
 
+    /* FLOATING SETTINGS GEAR (BOTTOM RIGHT - MATCHES IMAGE 2) */
+    .gear-btn {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .gear-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: rotate(60deg) scale(1.1);
+      border-color: #ffdf00;
+    }
+
     /* MODAL STYLING */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
     .setup-card { background: #181830; border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 28px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
@@ -285,26 +261,17 @@
 
     .hidden { display: none !important; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 820px) {
       .dashboard-panel { height: auto; flex-direction: column; padding: 10px; gap: 10px; }
       .left-controls, .right-scoreboard { width: 100%; }
       .right-scoreboard { flex-direction: row; height: 75px; }
       .key-btn { height: 44px; font-size: 1.1rem; }
+      .wheel-wrapper { width: 240px; height: 240px; }
+      #wheelCanvas { width: 230px; height: 230px; }
     }
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header>
-    <div class="logo">🎡 Wheel of Fortune</div>
-    <button class="setup-btn" onclick="openSetupModal()">🔒 Teacher Setup</button>
-  </header>
-
-  <!-- CATEGORY BADGE -->
-  <div class="category-container">
-    <div class="category-badge" id="categoryBadge">⚡ CATEGORY: PHRASE</div>
-  </div>
 
   <!-- MULTI-ROW PUZZLE BOARD -->
   <main class="board-container" id="boardContainer"></main>
@@ -319,10 +286,10 @@
       <button class="ctrl-btn btn-solve" onclick="promptSolve()">✅ SOLVE!</button>
     </div>
 
-    <!-- CENTER WHEEL -->
+    <!-- CENTER WHEEL (320px Canvas) -->
     <div class="wheel-wrapper" onclick="spinWheel()">
       <div class="pointer"></div>
-      <canvas id="wheelCanvas" width="210" height="210"></canvas>
+      <canvas id="wheelCanvas" width="320" height="320"></canvas>
     </div>
 
     <!-- RIGHT SCOREBOARD -->
@@ -340,6 +307,9 @@
 
   <!-- FULL-WIDTH BOTTOM KEYBOARD -->
   <footer class="keyboard-bar" id="keyboardBar"></footer>
+
+  <!-- FLOATING GEAR BUTTON (BOTTOM RIGHT) -->
+  <button class="gear-btn" onclick="openSetupModal()" title="Teacher Setup / Change Phrase">⚙️</button>
 
   <!-- TEACHER SETUP MODAL -->
   <div id="setupModal" class="modal-overlay">
@@ -494,7 +464,6 @@
       canGuessConsonant = false;
       buyingVowel = false;
 
-      document.getElementById('categoryBadge').textContent = `⚡ CATEGORY: ${categoryTag}`;
       updateScoreboard();
       renderBoard();
       resetKeyboard();
@@ -544,22 +513,22 @@
       });
     }
 
-    /* WHEEL CANVAS */
+    /* WHEEL CANVAS (320x320 HIGH RESOLUTION) */
     function drawWheel() {
       const canvas = document.getElementById('wheelCanvas');
       const ctx = canvas.getContext('2d');
       const numSlices = slices.length;
       const arc = (2 * Math.PI) / numSlices;
 
-      ctx.clearRect(0, 0, 210, 210);
+      ctx.clearRect(0, 0, 320, 320);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = currentAngle + i * arc;
         ctx.beginPath();
         ctx.fillStyle = slices[i].color;
-        ctx.moveTo(105, 105);
-        ctx.arc(105, 105, 100, angle, angle + arc);
-        ctx.lineTo(105, 105);
+        ctx.moveTo(160, 160);
+        ctx.arc(160, 160, 150, angle, angle + arc);
+        ctx.lineTo(160, 160);
         ctx.fill();
 
         ctx.strokeStyle = "rgba(255,255,255,0.3)";
@@ -567,19 +536,22 @@
         ctx.stroke();
 
         ctx.save();
-        ctx.translate(105, 105);
+        ctx.translate(160, 160);
         ctx.rotate(angle + arc / 2);
         ctx.textAlign = "right";
         ctx.fillStyle = slices[i].textColor || "#ffffff";
-        ctx.font = "bold 14px 'Segoe UI', sans-serif";
-        ctx.fillText(slices[i].label, 90, 5);
+        ctx.font = "900 18px 'Segoe UI', sans-serif";
+        ctx.fillText(slices[i].label, 138, 6);
         ctx.restore();
       }
 
       ctx.beginPath();
-      ctx.arc(105, 105, 18, 0, 2 * Math.PI);
+      ctx.arc(160, 160, 24, 0, 2 * Math.PI);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.stroke();
     }
 
     function spinWheel() {
