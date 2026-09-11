@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     
     body {
-      background: radial-gradient(circle at center, #5b21b6 0%, #1e1b4b 100%);
+      background: radial-gradient(circle at center, #4c1d95 0%, #0f172a 100%);
       color: #fff;
       height: 100vh;
       display: flex;
@@ -30,8 +30,8 @@
     .logo {
       font-size: 2rem;
       font-weight: 900;
-      color: #facc15;
-      text-shadow: 0 0 12px rgba(250, 204, 21, 0.4), 2px 2px 0 #000;
+      color: #ffdf00;
+      text-shadow: 0 0 12px rgba(255, 223, 0, 0.4), 2px 2px 0 #000;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -48,7 +48,7 @@
       backdrop-filter: blur(8px);
       transition: all 0.2s;
     }
-    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-1px); }
+    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
     /* CATEGORY BADGE */
     .category-container {
@@ -58,16 +58,16 @@
       margin-bottom: 5px;
     }
     .category-badge {
-      background: rgba(250, 204, 21, 0.2);
-      border: 2px solid #facc15;
-      color: #facc15;
+      background: rgba(255, 223, 0, 0.2);
+      border: 2px solid #ffdf00;
+      color: #ffdf00;
       padding: 8px 26px;
       border-radius: 30px;
       font-weight: 900;
       font-size: 1.25rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
+      box-shadow: 0 0 15px rgba(255, 223, 0, 0.3);
     }
 
     /* MULTI-ROW PUZZLE BOARD */
@@ -105,8 +105,8 @@
     .tile-card.letter-revealed {
       background: #ffffff;
       color: #0284c7;
-      border: 3px solid #facc15;
-      box-shadow: 0 0 18px rgba(250, 204, 21, 0.6);
+      border: 3px solid #ffdf00;
+      box-shadow: 0 0 18px rgba(255, 223, 0, 0.6);
       animation: flipTile 0.4s ease-out;
     }
     .tile-card.space {
@@ -121,7 +121,7 @@
       display: flex;
       width: 100%;
       height: 250px;
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(12px);
       border-top: 3px solid rgba(255, 255, 255, 0.2);
       align-items: center;
@@ -139,9 +139,9 @@
       padding: 10px;
     }
     .status-text {
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       font-weight: 900;
-      color: #facc15;
+      color: #ffdf00;
       text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       text-align: center;
       min-height: 32px;
@@ -152,7 +152,7 @@
       padding: 12px;
       background: #ef4444;
       color: #fff;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
       border-radius: 30px;
       text-align: center;
@@ -169,7 +169,7 @@
       border: none;
       cursor: pointer;
       text-align: center;
-      transition: transform 0.1s, filter 0.2s;
+      transition: transform 0.1s;
     }
     .ctrl-btn:active { transform: scale(0.96); }
     .btn-vowel { background: #8b5cf6; color: #fff; box-shadow: 0 4px 0 #6d28d9; border: 2px solid #a78bfa; }
@@ -223,9 +223,9 @@
     }
     .team-box.team-1 { background: #dc2626; }
     .team-box.team-2 { background: #2563eb; }
-    .team-box.active { border-color: #facc15; box-shadow: inset 0 0 20px rgba(250, 204, 21, 0.6); }
-    .team-name { font-size: 1.05rem; font-weight: 900; opacity: 0.95; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-    .team-score { font-size: 3rem; font-weight: 900; color: #facc15; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
+    .team-box.active { border-color: #ffdf00; box-shadow: inset 0 0 20px rgba(255, 223, 0, 0.6); }
+    .team-name { font-size: 1.05rem; font-weight: 900; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+    .team-score { font-size: 3rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
 
     /* FULL-WIDTH BOTTOM KEYBOARD */
     .keyboard-bar {
@@ -258,29 +258,29 @@
       transition: all 0.12s;
       touch-action: manipulation;
     }
-    .key-btn:hover:not(:disabled) { background: #facc15; color: #000; border-color: #facc15; }
-    .key-btn:active:not(:disabled) { transform: scale(0.92); }
+    .key-btn:hover:not(:disabled) { background: #ffdf00; color: #000; border-color: #ffdf00; }
     .key-btn:disabled { opacity: 0.2; cursor: not-allowed; background: rgba(0,0,0,0.5); border-color: transparent; }
 
-    /* MODALS */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-    .setup-card { background: #1e1b4b; border: 3px solid rgba(255,255,255,0.25); border-radius: 24px; padding: 32px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-    .setup-title { font-size: 2.3rem; font-weight: 900; color: #facc15; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    /* MODAL STYLING */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .setup-card { background: #181830; border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 28px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+    .setup-title { font-size: 2.2rem; font-weight: 900; color: #ffdf00; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .input-label { font-size: 0.85rem; font-weight: 900; color: #38bdf8; text-transform: uppercase; margin: 16px 0 6px; text-align: left; letter-spacing: 1px; }
     
-    .input-wrapper { position: relative; width: 100%; }
-    .phrase-input { width: 100%; padding: 14px 50px 14px 16px; font-size: 1.15rem; font-weight: 700; border-radius: 12px; border: 2px solid #3b82f6; background: #0f172a; color: #fff; outline: none; }
-    .toggle-vis-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.4rem; cursor: pointer; opacity: 0.85; }
+    .input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+    .phrase-input { width: 100%; padding: 14px 50px 14px 16px; font-size: 1.1rem; font-weight: 700; border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); background: #0b0f19; color: #fff; outline: none; }
+    .phrase-input:focus { border-color: #38bdf8; }
+    .toggle-vis-btn { position: absolute; right: 12px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #fff; opacity: 0.9; }
+    
     select.phrase-input { appearance: none; padding-right: 16px; cursor: pointer; }
 
     .action-btn-group { display: flex; gap: 10px; margin-top: 22px; }
-    .start-btn { flex: 2; background: #facc15; color: #000; border: none; padding: 16px; font-size: 1.25rem; font-weight: 900; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; transition: transform 0.1s; }
-    .start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #b49d00; }
-    .qr-option-btn { flex: 1; background: rgba(255,255,255,0.15); color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 16px; font-size: 1.1rem; font-weight: 800; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .start-btn { flex: 2; background: #ffdf00; color: #000; border: none; padding: 15px; font-size: 1.15rem; font-weight: 900; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; }
+    .qr-option-btn { flex: 1; background: #3b82f6; color: #fff; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #1d4ed8; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
     /* QR MODAL */
-    .qr-card { background: #fff; color: #0f172a; border-radius: 24px; padding: 30px; width: 100%; max-width: 380px; text-align: center; position: relative; }
-    .close-btn { position: absolute; top: 16px; right: 16px; background: #e2e8f0; border: none; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+    .qr-card { background: #ffffff; color: #0f172a; border-radius: 24px; padding: 28px; width: 100%; max-width: 360px; text-align: center; position: relative; }
+    .close-btn { position: absolute; top: 14px; right: 14px; background: #e2e8f0; border: none; font-size: 1.2rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-weight: bold; }
     .qr-img { width: 220px; height: 220px; margin: 15px 0; border: 6px solid #f1f5f9; border-radius: 16px; }
 
     .hidden { display: none !important; }
@@ -346,7 +346,7 @@
     <div class="setup-card">
       <div class="setup-title">🎡 Wheel Setup</div>
       
-      <div class="input-label">Category Tag</div>
+      <div class="input-label">CATEGORY TAG</div>
       <select id="categorySelect" class="phrase-input" onchange="handleCategoryChange(this.value)">
         <option value="PHRASE">PHRASE</option>
         <option value="THING">THING</option>
@@ -358,10 +358,10 @@
       </select>
       <input type="text" id="customCategoryInput" class="phrase-input hidden" placeholder="Type custom category..." style="margin-top: 8px;">
 
-      <div class="input-label">Secret Phrase</div>
+      <div class="input-label">SECRET PHRASE</div>
       <div class="input-wrapper">
         <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
-        <button type="button" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
+        <button type="button" id="eyeBtn" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
       </div>
 
       <div class="action-btn-group">
@@ -375,10 +375,10 @@
   <div id="qrModal" class="modal-overlay hidden">
     <div class="qr-card">
       <button class="close-btn" onclick="closeQRModal()">✕</button>
-      <div style="font-size: 0.85rem; font-weight: 900; color: #2563eb; letter-spacing: 1px;">SCAN TO PLAY ON IPAD</div>
-      <div style="font-size: 1.8rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
+      <div style="font-size: 0.8rem; font-weight: 900; color: #2563eb; letter-spacing: 1px;">SCAN TO PLAY ON TABLET</div>
+      <div style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
       <img id="qrImage" class="qr-img" src="" alt="QR Code">
-      <p style="font-weight: 700; color: #475569;">Scan with iPad/Phone Camera</p>
+      <p style="font-weight: 700; color: #475569; font-size: 0.9rem;">Scan with iPad / Phone Camera</p>
     </div>
   </div>
 
@@ -436,13 +436,13 @@
 
     function togglePhraseVisibility() {
       const input = document.getElementById('phraseInput');
-      const btn = event.target;
+      const eyeBtn = document.getElementById('eyeBtn');
       if (input.type === 'password') {
         input.type = 'text';
-        btn.textContent = '🙈';
+        eyeBtn.textContent = '🙈';
       } else {
         input.type = 'password';
-        btn.textContent = '👁️';
+        eyeBtn.textContent = '👁️';
       }
     }
 
@@ -753,7 +753,7 @@
       }
     }
 
-    /* HARDWARE KEYBOARD LISTENER (IPAD / PC KEYBOARD) */
+    /* HARDWARE KEYBOARD LISTENER */
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
       const key = e.key.toUpperCase();
