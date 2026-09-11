@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Wheel of Fortune</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     
     body {
-      background: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%);
+      background: radial-gradient(circle at center, #5b21b6 0%, #1e1b4b 100%);
       color: #fff;
       height: 100vh;
       display: flex;
@@ -28,45 +28,46 @@
       z-index: 10;
     }
     .logo {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 900;
-      color: #ffdf00;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+      color: #facc15;
+      text-shadow: 0 0 12px rgba(250, 204, 21, 0.4), 2px 2px 0 #000;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     .setup-btn {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 8px 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 18px;
       border-radius: 20px;
-      font-weight: 700;
-      font-size: 0.9rem;
+      font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
-      backdrop-filter: blur(5px);
-      transition: background 0.2s;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
     }
-    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); }
+    .setup-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-1px); }
 
     /* CATEGORY BADGE */
     .category-container {
       display: flex;
       justify-content: center;
-      margin-bottom: 10px;
+      margin-top: -5px;
+      margin-bottom: 5px;
     }
     .category-badge {
-      background: rgba(255, 223, 0, 0.25);
-      border: 2px solid #ffdf00;
-      color: #ffdf00;
-      padding: 6px 20px;
-      border-radius: 20px;
+      background: rgba(250, 204, 21, 0.2);
+      border: 2px solid #facc15;
+      color: #facc15;
+      padding: 8px 26px;
+      border-radius: 30px;
       font-weight: 900;
-      font-size: 1rem;
-      letter-spacing: 1.5px;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      box-shadow: 0 0 10px rgba(255, 223, 0, 0.3);
+      box-shadow: 0 0 15px rgba(250, 204, 21, 0.3);
     }
 
     /* MULTI-ROW PUZZLE BOARD */
@@ -76,53 +77,53 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       padding: 10px 20px;
     }
     .puzzle-row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       justify-content: center;
     }
     .tile-card {
-      width: clamp(38px, 4.2vw, 55px);
-      height: clamp(50px, 5.5vw, 70px);
-      border-radius: 6px;
+      width: clamp(45px, 5.2vw, 68px);
+      height: clamp(58px, 6.8vw, 88px);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-size: clamp(2rem, 3.2vw, 3rem);
       font-weight: 900;
       text-transform: uppercase;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
     }
     .tile-card.letter-hidden {
-      background: #18182c;
-      border: 2px solid #2a3282;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+      background: #0f172a;
+      border: 3px solid #3b82f6;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.9), 0 0 8px rgba(59, 130, 246, 0.3);
     }
     .tile-card.letter-revealed {
       background: #ffffff;
-      color: #0f172a;
-      border: 2px solid #ffdf00;
-      box-shadow: 0 0 12px rgba(255, 223, 0, 0.5);
+      color: #0284c7;
+      border: 3px solid #facc15;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.6);
       animation: flipTile 0.4s ease-out;
     }
     .tile-card.space {
       visibility: hidden;
-      width: clamp(20px, 2vw, 30px);
+      width: clamp(22px, 2.5vw, 36px);
     }
 
     @keyframes flipTile { 0% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
 
-    /* DASHBOARD PANEL (CONTROLS - WHEEL - SCOREBOARD) */
+    /* DASHBOARD PANEL */
     .dashboard-panel {
       display: flex;
       width: 100%;
-      height: 240px;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(10px);
-      border-top: 2px solid rgba(255, 255, 255, 0.15);
+      height: 250px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(12px);
+      border-top: 3px solid rgba(255, 255, 255, 0.2);
       align-items: center;
       justify-content: space-between;
     }
@@ -134,72 +135,73 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       padding: 10px;
     }
     .status-text {
-      font-size: 1.2rem;
+      font-size: 1.45rem;
       font-weight: 900;
-      color: #ffdf00;
-      text-shadow: 1px 2px 0 rgba(0,0,0,0.5);
+      color: #facc15;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
       text-align: center;
-      min-height: 28px;
+      min-height: 32px;
     }
     .turn-badge {
-      width: 80%;
-      max-width: 220px;
-      padding: 10px;
+      width: 85%;
+      max-width: 240px;
+      padding: 12px;
       background: #ef4444;
       color: #fff;
-      font-size: 1rem;
-      font-weight: 800;
-      border-radius: 25px;
+      font-size: 1.25rem;
+      font-weight: 900;
+      border-radius: 30px;
       text-align: center;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      border: 2px solid rgba(255,255,255,0.3);
     }
     .ctrl-btn {
-      width: 80%;
-      max-width: 220px;
-      padding: 10px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      border-radius: 25px;
+      width: 85%;
+      max-width: 240px;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      border-radius: 30px;
       border: none;
       cursor: pointer;
       text-align: center;
-      transition: transform 0.1s;
+      transition: transform 0.1s, filter 0.2s;
     }
     .ctrl-btn:active { transform: scale(0.96); }
-    .btn-vowel { background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); }
-    .btn-solve { background: #22c55e; color: #fff; box-shadow: 0 4px 0 #15803d; }
+    .btn-vowel { background: #8b5cf6; color: #fff; box-shadow: 0 4px 0 #6d28d9; border: 2px solid #a78bfa; }
+    .btn-solve { background: #22c55e; color: #fff; box-shadow: 0 4px 0 #15803d; border: 2px solid #4ade80; }
 
     /* CENTER WHEEL */
     .wheel-wrapper {
       position: relative;
-      width: 210px;
-      height: 210px;
+      width: 220px;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     #wheelCanvas {
-      width: 200px;
-      height: 200px;
+      width: 210px;
+      height: 210px;
       border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6), 0 0 0 6px rgba(255,255,255,0.2);
+      box-shadow: 0 0 25px rgba(0,0,0,0.8), 0 0 0 8px rgba(255,255,255,0.25);
       cursor: pointer;
       transition: transform 4s cubic-bezier(0.15, 0.99, 0.35, 1);
     }
     .pointer {
       position: absolute;
-      right: -2px;
+      right: -4px;
       top: 50%;
       transform: translateY(-50%);
       width: 0; height: 0;
-      border-top: 14px solid transparent;
-      border-bottom: 14px solid transparent;
-      border-right: 22px solid #ef4444;
-      filter: drop-shadow(-2px 2px 3px rgba(0,0,0,0.5));
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+      border-right: 26px solid #ef4444;
+      filter: drop-shadow(-3px 2px 4px rgba(0,0,0,0.6));
       z-index: 10;
     }
 
@@ -216,63 +218,78 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 3px solid transparent;
-      transition: border 0.2s;
+      border: 4px solid transparent;
+      transition: all 0.2s;
     }
     .team-box.team-1 { background: #dc2626; }
-    .team-box.team-2 { background: #1d4ed8; }
-    .team-box.active { border-color: #ffdf00; box-shadow: inset 0 0 15px rgba(255,223,0,0.5); }
-    .team-name { font-size: 0.85rem; font-weight: 900; opacity: 0.9; letter-spacing: 1px; }
-    .team-score { font-size: 2.2rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 2px 0 rgba(0,0,0,0.4); }
+    .team-box.team-2 { background: #2563eb; }
+    .team-box.active { border-color: #facc15; box-shadow: inset 0 0 20px rgba(250, 204, 21, 0.6); }
+    .team-name { font-size: 1.05rem; font-weight: 900; opacity: 0.95; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+    .team-score { font-size: 3rem; font-weight: 900; color: #facc15; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
 
     /* FULL-WIDTH BOTTOM KEYBOARD */
     .keyboard-bar {
       width: 100%;
-      background: rgba(15, 23, 42, 0.85);
-      padding: 8px 12px;
+      background: rgba(15, 23, 42, 0.95);
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      border-top: 1px solid rgba(255,255,255,0.2);
+      gap: 8px;
+      border-top: 2px solid rgba(255,255,255,0.2);
     }
     .kb-row {
       display: flex;
       width: 100%;
-      gap: 4px;
+      gap: 6px;
     }
     .key-btn {
       flex: 1;
-      height: 48px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 6px;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 8px;
       color: #fff;
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1.35rem;
+      font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.1s;
+      transition: all 0.12s;
       touch-action: manipulation;
     }
-    .key-btn:active:not(:disabled) { background: #ffdf00; color: #000; }
-    .key-btn:disabled { opacity: 0.25; cursor: not-allowed; background: rgba(0,0,0,0.4); border-color: transparent; }
+    .key-btn:hover:not(:disabled) { background: #facc15; color: #000; border-color: #facc15; }
+    .key-btn:active:not(:disabled) { transform: scale(0.92); }
+    .key-btn:disabled { opacity: 0.2; cursor: not-allowed; background: rgba(0,0,0,0.5); border-color: transparent; }
 
     /* MODALS */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-    .setup-card { background: rgba(30, 27, 75, 0.95); border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 30px; width: 100%; max-width: 500px; text-align: center; }
-    .setup-title { font-size: 2.2rem; font-weight: 900; color: #ffdf00; margin-bottom: 6px; }
-    .input-label { font-size: 0.85rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 12px 0 6px; text-align: left; }
-    .phrase-input { width: 100%; padding: 14px; font-size: 1.1rem; border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); background: #0f172a; color: #fff; outline: none; }
-    .start-btn { width: 100%; background: #ffdf00; color: #000; border: none; padding: 14px; font-size: 1.2rem; font-weight: 900; border-radius: 12px; margin-top: 18px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .setup-card { background: #1e1b4b; border: 3px solid rgba(255,255,255,0.25); border-radius: 24px; padding: 32px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+    .setup-title { font-size: 2.3rem; font-weight: 900; color: #facc15; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .input-label { font-size: 0.85rem; font-weight: 900; color: #38bdf8; text-transform: uppercase; margin: 16px 0 6px; text-align: left; letter-spacing: 1px; }
+    
+    .input-wrapper { position: relative; width: 100%; }
+    .phrase-input { width: 100%; padding: 14px 50px 14px 16px; font-size: 1.15rem; font-weight: 700; border-radius: 12px; border: 2px solid #3b82f6; background: #0f172a; color: #fff; outline: none; }
+    .toggle-vis-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.4rem; cursor: pointer; opacity: 0.85; }
+    select.phrase-input { appearance: none; padding-right: 16px; cursor: pointer; }
+
+    .action-btn-group { display: flex; gap: 10px; margin-top: 22px; }
+    .start-btn { flex: 2; background: #facc15; color: #000; border: none; padding: 16px; font-size: 1.25rem; font-weight: 900; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; transition: transform 0.1s; }
+    .start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #b49d00; }
+    .qr-option-btn { flex: 1; background: rgba(255,255,255,0.15); color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 16px; font-size: 1.1rem; font-weight: 800; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    /* QR MODAL */
+    .qr-card { background: #fff; color: #0f172a; border-radius: 24px; padding: 30px; width: 100%; max-width: 380px; text-align: center; position: relative; }
+    .close-btn { position: absolute; top: 16px; right: 16px; background: #e2e8f0; border: none; font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+    .qr-img { width: 220px; height: 220px; margin: 15px 0; border: 6px solid #f1f5f9; border-radius: 16px; }
+
     .hidden { display: none !important; }
 
     @media (max-width: 768px) {
       .dashboard-panel { height: auto; flex-direction: column; padding: 10px; gap: 10px; }
       .left-controls, .right-scoreboard { width: 100%; }
-      .right-scoreboard { flex-direction: row; height: 70px; }
-      .key-btn { height: 42px; font-size: 0.95rem; }
+      .right-scoreboard { flex-direction: row; height: 75px; }
+      .key-btn { height: 44px; font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -305,7 +322,7 @@
     <!-- CENTER WHEEL -->
     <div class="wheel-wrapper" onclick="spinWheel()">
       <div class="pointer"></div>
-      <canvas id="wheelCanvas" width="200" height="200"></canvas>
+      <canvas id="wheelCanvas" width="210" height="210"></canvas>
     </div>
 
     <!-- RIGHT SCOREBOARD -->
@@ -321,7 +338,7 @@
     </div>
   </section>
 
-  <!-- FULL-WIDTH BOTTOM KEYBOARD (TABLET & TOUCH FRIENDLY) -->
+  <!-- FULL-WIDTH BOTTOM KEYBOARD -->
   <footer class="keyboard-bar" id="keyboardBar"></footer>
 
   <!-- TEACHER SETUP MODAL -->
@@ -342,14 +359,31 @@
       <input type="text" id="customCategoryInput" class="phrase-input hidden" placeholder="Type custom category..." style="margin-top: 8px;">
 
       <div class="input-label">Secret Phrase</div>
-      <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
+      <div class="input-wrapper">
+        <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
+        <button type="button" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
+      </div>
 
-      <button class="start-btn" onclick="startGameFromSetup()">▶ START GAME</button>
+      <div class="action-btn-group">
+        <button class="start-btn" onclick="startGameFromSetup()">▶ START GAME</button>
+        <button class="qr-option-btn" onclick="showQRCodeModal()">📱 QR Code</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR CODE MODAL -->
+  <div id="qrModal" class="modal-overlay hidden">
+    <div class="qr-card">
+      <button class="close-btn" onclick="closeQRModal()">✕</button>
+      <div style="font-size: 0.85rem; font-weight: 900; color: #2563eb; letter-spacing: 1px;">SCAN TO PLAY ON IPAD</div>
+      <div style="font-size: 1.8rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
+      <img id="qrImage" class="qr-img" src="" alt="QR Code">
+      <p style="font-weight: 700; color: #475569;">Scan with iPad/Phone Camera</p>
     </div>
   </div>
 
   <script>
-    let secretPhrase = "CLASSROOM ARCADE";
+    let secretPhrase = "";
     let categoryTag = "PHRASE";
     let revealedLetters = new Set();
     let currentTeam = 1;
@@ -400,22 +434,57 @@
       document.getElementById('setupModal').classList.remove('hidden');
     }
 
+    function togglePhraseVisibility() {
+      const input = document.getElementById('phraseInput');
+      const btn = event.target;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
     function handleCategoryChange(val) {
       document.getElementById('customCategoryInput').classList.toggle('hidden', val !== 'CUSTOM');
+    }
+
+    function getSelectedCategory() {
+      const selectVal = document.getElementById('categorySelect').value;
+      if (selectVal === 'CUSTOM') {
+        return document.getElementById('customCategoryInput').value.trim().toUpperCase() || "PUZZLE";
+      }
+      return selectVal;
     }
 
     function startGameFromSetup() {
       const input = document.getElementById('phraseInput').value.trim().toUpperCase();
       if (!input || !/^[A-Z\s]+$/.test(input)) {
-        alert("Please enter a phrase using letters and spaces only!");
+        alert("Please enter a valid phrase using letters and spaces only!");
         return;
       }
       secretPhrase = input;
-      const catSelect = document.getElementById('categorySelect').value;
-      categoryTag = catSelect === 'CUSTOM' ? (document.getElementById('customCategoryInput').value.trim().toUpperCase() || "PUZZLE") : catSelect;
+      categoryTag = getSelectedCategory();
       
       document.getElementById('setupModal').classList.add('hidden');
       initGame();
+    }
+
+    function showQRCodeModal() {
+      const input = document.getElementById('phraseInput').value.trim().toUpperCase();
+      if (!input) {
+        alert("Please enter a secret phrase first!");
+        return;
+      }
+      const cat = getSelectedCategory();
+      const playURL = `${window.location.href.split('?')[0]}?p=${btoa(input)}&c=${btoa(cat)}`;
+      document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(playURL)}`;
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    function closeQRModal() {
+      document.getElementById('qrModal').classList.add('hidden');
     }
 
     function initGame() {
@@ -482,33 +551,33 @@
       const numSlices = slices.length;
       const arc = (2 * Math.PI) / numSlices;
 
-      ctx.clearRect(0, 0, 200, 200);
+      ctx.clearRect(0, 0, 210, 210);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = currentAngle + i * arc;
         ctx.beginPath();
         ctx.fillStyle = slices[i].color;
-        ctx.moveTo(100, 100);
-        ctx.arc(100, 100, 95, angle, angle + arc);
-        ctx.lineTo(100, 100);
+        ctx.moveTo(105, 105);
+        ctx.arc(105, 105, 100, angle, angle + arc);
+        ctx.lineTo(105, 105);
         ctx.fill();
 
         ctx.strokeStyle = "rgba(255,255,255,0.3)";
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2;
         ctx.stroke();
 
         ctx.save();
-        ctx.translate(100, 100);
+        ctx.translate(105, 105);
         ctx.rotate(angle + arc / 2);
         ctx.textAlign = "right";
         ctx.fillStyle = slices[i].textColor || "#ffffff";
-        ctx.font = "bold 13px 'Segoe UI', sans-serif";
-        ctx.fillText(slices[i].label, 85, 4);
+        ctx.font = "bold 14px 'Segoe UI', sans-serif";
+        ctx.fillText(slices[i].label, 90, 5);
         ctx.restore();
       }
 
       ctx.beginPath();
-      ctx.arc(100, 100, 16, 0, 2 * Math.PI);
+      ctx.arc(105, 105, 18, 0, 2 * Math.PI);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
     }
@@ -655,7 +724,7 @@
       
       const badge = document.getElementById('turnBadge');
       badge.textContent = currentTeam === 1 ? "🔴 Team 1's Turn" : "🔵 Team 2's Turn";
-      badge.style.background = currentTeam === 1 ? "#ef4444" : "#1d4ed8";
+      badge.style.background = currentTeam === 1 ? "#ef4444" : "#2563eb";
 
       document.getElementById('team1Box').classList.toggle('active', currentTeam === 1);
       document.getElementById('team2Box').classList.toggle('active', currentTeam === 2);
@@ -684,7 +753,7 @@
       }
     }
 
-    /* HARDWARE KEYBOARD LISTENER (IPAD MAGIC KEYBOARD / PC) */
+    /* HARDWARE KEYBOARD LISTENER (IPAD / PC KEYBOARD) */
     document.addEventListener('keydown', (e) => {
       if (!document.getElementById('setupModal').classList.contains('hidden')) return;
       const key = e.key.toUpperCase();
