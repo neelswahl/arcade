@@ -8,71 +8,230 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     
     body {
-      background: radial-gradient(circle at center, #3b0764 0%, #0f172a 100%);
-      color: #fff;
-      height: 100vh;
+      background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #1e1b4b 100%);
+      color: #ffffff;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      overflow: hidden;
+      overflow-x: hidden;
       user-select: none;
+    }
+
+    /* =========================================================
+       1. SETUP SCREEN (MATCHES IMAGE 1)
+       ========================================================= */
+    .setup-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .setup-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .setup-header .icon {
+      font-size: 3.5rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+
+    .setup-header h1 {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 900;
+      color: #ffdf00;
+      text-shadow: 3px 4px 0px #b48a00, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+      letter-spacing: 1px;
+    }
+
+    .setup-card {
+      background: rgba(30, 27, 75, 0.65);
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 620px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .instructions-text {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 24px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .phrase-input {
+      width: 100%;
+      padding: 16px 54px 16px 20px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: 16px;
+      border: 3px solid #ffdf00;
+      background: #1e1b4b;
+      color: #ffffff;
+      outline: none;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    .phrase-input::placeholder { color: #64748b; }
+
+    .toggle-vis-btn {
+      position: absolute;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ffffff;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .toggle-vis-btn:hover { opacity: 1; }
+
+    .select-category {
+      appearance: none;
+      padding-right: 20px;
+      cursor: pointer;
+    }
+
+    .btn-main-start {
+      width: 100%;
+      max-width: 320px;
+      margin: 16px auto 0;
+      padding: 18px 24px;
+      background: #ffc000;
+      color: #000000;
+      font-size: 1.5rem;
+      font-weight: 900;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #b48a00, 0 10px 20px rgba(0,0,0,0.4);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-main-start:hover { background: #ffd033; transform: translateY(-2px); }
+    .btn-main-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #b48a00; }
+
+    .btn-qr-secondary {
+      margin-top: 14px;
+      background: rgba(56, 189, 248, 0.2);
+      border: 2px solid #38bdf8;
+      color: #38bdf8;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-qr-secondary:hover { background: #38bdf8; color: #000; }
+
+    /* =========================================================
+       2. MAIN GAME SCREEN (MATCHES IMAGE 2)
+       ========================================================= */
+    .game-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      width: 100vw;
       position: relative;
     }
 
-    /* MULTI-ROW PUZZLE BOARD AREA */
-    .board-container {
+    /* TOP PUZZLE BOARD */
+    .board-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 12px;
-      padding: 15px 20px;
+      padding: 20px;
     }
+
     .puzzle-row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
     }
+
     .tile-card {
-      width: clamp(48px, 5.5vw, 72px);
-      height: clamp(62px, 7vw, 92px);
+      width: clamp(40px, 5vw, 68px);
+      height: clamp(54px, 6.5vw, 88px);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-size: clamp(2rem, 3.2vw, 3rem);
       font-weight: 900;
       text-transform: uppercase;
       box-shadow: 0 6px 14px rgba(0,0,0,0.5);
     }
-    .tile-card.letter-hidden {
-      background: #0f172a;
-      border: 3px solid #3b82f6;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.9), 0 0 8px rgba(59, 130, 246, 0.3);
+
+    .tile-card.hidden-tile {
+      background: #111827;
+      border: 3px solid #312e81;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.9), 0 0 8px rgba(79, 70, 229, 0.4);
     }
-    .tile-card.letter-revealed {
+
+    .tile-card.revealed-tile {
       background: #ffffff;
-      color: #0284c7;
+      color: #1d4ed8;
       border: 3px solid #ffdf00;
-      box-shadow: 0 0 18px rgba(255, 223, 0, 0.6);
-      animation: flipTile 0.4s ease-out;
+      box-shadow: 0 0 18px rgba(255, 223, 0, 0.7);
+      animation: flipTile 0.35s ease-out;
     }
-    .tile-card.space {
+
+    .tile-card.space-tile {
       visibility: hidden;
-      width: clamp(22px, 2.5vw, 36px);
+      width: clamp(18px, 2.2vw, 32px);
     }
 
     @keyframes flipTile { 0% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
 
-    /* CENTER DASHBOARD PANEL */
+    /* MIDDLE DASHBOARD PANEL */
     .dashboard-panel {
       display: flex;
       width: 100%;
-      height: 330px; /* Taller area for large wheel */
-      background: rgba(15, 23, 42, 0.75);
+      height: 310px;
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(12px);
-      border-top: 3px solid rgba(255, 255, 255, 0.2);
+      border-top: 2px solid rgba(255, 255, 255, 0.2);
       align-items: center;
       justify-content: space-between;
     }
@@ -84,35 +243,38 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       padding: 10px;
     }
-    .status-text {
-      font-size: 1.5rem;
+
+    .spin-prompt {
+      font-size: 1.3rem;
       font-weight: 900;
       color: #ffdf00;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       text-align: center;
-      min-height: 36px;
+      min-height: 32px;
     }
+
     .turn-badge {
-      width: 85%;
-      max-width: 240px;
-      padding: 12px;
+      width: 80%;
+      max-width: 220px;
+      padding: 10px;
       background: #ef4444;
-      color: #fff;
-      font-size: 1.25rem;
+      color: #ffffff;
+      font-size: 1.15rem;
       font-weight: 900;
       border-radius: 30px;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
       border: 2px solid rgba(255,255,255,0.3);
     }
+
     .ctrl-btn {
-      width: 85%;
-      max-width: 240px;
-      padding: 12px;
-      font-size: 1.1rem;
+      width: 80%;
+      max-width: 220px;
+      padding: 10px;
+      font-size: 1rem;
       font-weight: 900;
       border-radius: 30px;
       border: none;
@@ -121,36 +283,37 @@
       transition: transform 0.1s;
     }
     .ctrl-btn:active { transform: scale(0.96); }
-    .btn-vowel { background: #8b5cf6; color: #fff; box-shadow: 0 4px 0 #6d28d9; border: 2px solid #a78bfa; }
-    .btn-solve { background: #22c55e; color: #fff; box-shadow: 0 4px 0 #15803d; border: 2px solid #4ade80; }
+    .btn-vowel { background: #8b5cf6; color: #fff; box-shadow: 0 4px 0 #6d28d9; }
+    .btn-solve { background: #10b981; color: #fff; box-shadow: 0 4px 0 #047857; }
 
-    /* CENTER WHEEL (LARGE SIZE) */
+    /* CENTER WHEEL */
     .wheel-wrapper {
       position: relative;
-      width: 320px;
-      height: 320px;
+      width: 290px;
+      height: 290px;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    #wheelCanvas {
-      width: 310px;
-      height: 310px;
-      border-radius: 50%;
-      box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 0 8px rgba(255,255,255,0.25);
       cursor: pointer;
-      transition: transform 4s cubic-bezier(0.15, 0.99, 0.35, 1);
     }
-    .pointer {
+
+    #wheelCanvas {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 0 6px rgba(255,255,255,0.3);
+    }
+
+    .pointer-arrow {
       position: absolute;
-      right: -8px;
+      right: -6px;
       top: 50%;
       transform: translateY(-50%);
       width: 0; height: 0;
-      border-top: 18px solid transparent;
-      border-bottom: 18px solid transparent;
-      border-right: 30px solid #ef4444;
-      filter: drop-shadow(-3px 2px 4px rgba(0,0,0,0.6));
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+      border-right: 28px solid #ef4444;
+      filter: drop-shadow(-2px 2px 4px rgba(0,0,0,0.7));
       z-index: 10;
     }
 
@@ -161,6 +324,7 @@
       flex-direction: column;
       height: 100%;
     }
+
     .team-box {
       flex: 1;
       display: flex;
@@ -172,172 +336,218 @@
     }
     .team-box.team-1 { background: #dc2626; }
     .team-box.team-2 { background: #2563eb; }
-    .team-box.active { border-color: #ffdf00; box-shadow: inset 0 0 20px rgba(255, 223, 0, 0.6); }
-    .team-name { font-size: 1.1rem; font-weight: 900; letter-spacing: 1.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-    .team-score { font-size: 3.5rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
+    .team-box.active-team { border-color: #ffdf00; box-shadow: inset 0 0 24px rgba(255, 223, 0, 0.7); }
+    .team-title { font-size: 1rem; font-weight: 900; letter-spacing: 1px; }
+    .team-score { font-size: 3.2rem; font-weight: 900; color: #ffdf00; text-shadow: 2px 3px 0 rgba(0,0,0,0.5); }
 
-    /* FULL-WIDTH BOTTOM KEYBOARD */
+    /* BOTTOM KEYBOARD */
     .keyboard-bar {
       width: 100%;
       background: rgba(15, 23, 42, 0.95);
-      padding: 10px 14px 10px 14px;
+      padding: 10px 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
       border-top: 2px solid rgba(255,255,255,0.2);
     }
+
     .kb-row {
       display: flex;
       width: 100%;
       gap: 6px;
     }
+
     .key-btn {
       flex: 1;
-      height: 52px;
+      height: 50px;
       background: rgba(255, 255, 255, 0.18);
       border: 2px solid rgba(255, 255, 255, 0.35);
       border-radius: 8px;
-      color: #fff;
-      font-size: 1.35rem;
+      color: #ffffff;
+      font-size: 1.3rem;
       font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.12s;
+      transition: all 0.1s;
       touch-action: manipulation;
     }
     .key-btn:hover:not(:disabled) { background: #ffdf00; color: #000; border-color: #ffdf00; }
     .key-btn:disabled { opacity: 0.2; cursor: not-allowed; background: rgba(0,0,0,0.5); border-color: transparent; }
 
-    /* FLOATING SETTINGS GEAR (BOTTOM RIGHT - MATCHES IMAGE 2) */
-    .gear-btn {
+    /* FLOATING SETTINGS & MOBILE KEYBOARD BUTTONS */
+    .floating-btn-group {
       position: fixed;
       bottom: 12px;
       right: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 90;
+    }
+
+    .float-icon-btn {
       width: 44px;
       height: 44px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 2px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.4);
       border-radius: 50%;
       color: #fff;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 90;
       backdrop-filter: blur(8px);
-      transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: all 0.2s;
     }
-    .gear-btn:hover {
-      background: rgba(255, 255, 255, 0.35);
-      transform: rotate(60deg) scale(1.1);
-      border-color: #ffdf00;
+    .float-icon-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.08); }
+
+    /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
     }
 
-    /* MODAL STYLING */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-    .setup-card { background: #181830; border: 2px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 28px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
-    .setup-title { font-size: 2.2rem; font-weight: 900; color: #ffdf00; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .input-label { font-size: 0.85rem; font-weight: 900; color: #38bdf8; text-transform: uppercase; margin: 16px 0 6px; text-align: left; letter-spacing: 1px; }
-    
-    .input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
-    .phrase-input { width: 100%; padding: 14px 50px 14px 16px; font-size: 1.1rem; font-weight: 700; border-radius: 12px; border: 2px solid rgba(255,255,255,0.3); background: #0b0f19; color: #fff; outline: none; }
-    .phrase-input:focus { border-color: #38bdf8; }
-    .toggle-vis-btn { position: absolute; right: 12px; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #fff; opacity: 0.9; }
-    
-    select.phrase-input { appearance: none; padding-right: 16px; cursor: pointer; }
-
-    .action-btn-group { display: flex; gap: 10px; margin-top: 22px; }
-    .start-btn { flex: 2; background: #ffdf00; color: #000; border: none; padding: 15px; font-size: 1.15rem; font-weight: 900; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #b49d00; }
-    .qr-option-btn { flex: 1; background: #3b82f6; color: #fff; border: none; padding: 15px; font-size: 1rem; font-weight: 800; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #1d4ed8; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-    /* QR MODAL */
-    .qr-card { background: #ffffff; color: #0f172a; border-radius: 24px; padding: 28px; width: 100%; max-width: 360px; text-align: center; position: relative; }
-    .close-btn { position: absolute; top: 14px; right: 14px; background: #e2e8f0; border: none; font-size: 1.2rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+    .qr-card {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 28px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      position: relative;
+    }
+    .close-btn {
+      position: absolute; top: 14px; right: 14px;
+      background: #e2e8f0; border: none; font-size: 1.2rem;
+      width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-weight: bold;
+    }
     .qr-img { width: 220px; height: 220px; margin: 15px 0; border: 6px solid #f1f5f9; border-radius: 16px; }
+
+    #confettiCanvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 99;
+    }
 
     .hidden { display: none !important; }
 
-    @media (max-width: 820px) {
-      .dashboard-panel { height: auto; flex-direction: column; padding: 10px; gap: 10px; }
+    /* HIDDEN NATIVE KEYBOARD BRIDGE INPUT */
+    #hiddenMobileInput {
+      position: absolute;
+      top: -1000px;
+      left: -1000px;
+      opacity: 0;
+    }
+
+    @media (max-width: 800px) {
+      .dashboard-panel { height: auto; flex-direction: column; padding: 10px; gap: 8px; }
       .left-controls, .right-scoreboard { width: 100%; }
-      .right-scoreboard { flex-direction: row; height: 75px; }
-      .key-btn { height: 44px; font-size: 1.1rem; }
-      .wheel-wrapper { width: 240px; height: 240px; }
-      #wheelCanvas { width: 230px; height: 230px; }
+      .right-scoreboard { flex-direction: row; height: 70px; }
+      .wheel-wrapper { width: 220px; height: 220px; }
+      #wheelCanvas { width: 210px; height: 210px; }
+      .key-btn { height: 42px; font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- MULTI-ROW PUZZLE BOARD -->
-  <main class="board-container" id="boardContainer"></main>
+  <canvas id="confettiCanvas"></canvas>
 
-  <!-- DASHBOARD CONTROLS -->
-  <section class="dashboard-panel">
-    <!-- LEFT CONTROLS -->
-    <div class="left-controls">
-      <div class="status-text" id="statusText">Click the wheel to spin!</div>
-      <div class="turn-badge" id="turnBadge">🔴 Team 1's Turn</div>
-      <button class="ctrl-btn btn-vowel" onclick="buyVowel()">💳 Buy Vowel (100 pts)</button>
-      <button class="ctrl-btn btn-solve" onclick="promptSolve()">✅ SOLVE!</button>
+  <!-- HIDDEN NATIVE MOBILE KEYBOARD BRIDGE -->
+  <input type="text" id="hiddenMobileInput" autocomplete="off" />
+
+  <!-- ==========================================
+       1. SETUP SCREEN (IMAGE 1)
+       ========================================== -->
+  <div id="setupScreen" class="setup-screen">
+    <div class="setup-header">
+      <span class="icon">🎡</span>
+      <h1>Wheel of Fortune</h1>
     </div>
 
-    <!-- CENTER WHEEL (320px Canvas) -->
-    <div class="wheel-wrapper" onclick="spinWheel()">
-      <div class="pointer"></div>
-      <canvas id="wheelCanvas" width="320" height="320"></canvas>
-    </div>
-
-    <!-- RIGHT SCOREBOARD -->
-    <div class="right-scoreboard">
-      <div class="team-box team-1 active" id="team1Box">
-        <div class="team-name">● TEAM 1</div>
-        <div class="team-score" id="score1">0</div>
-      </div>
-      <div class="team-box team-2" id="team2Box">
-        <div class="team-name">● TEAM 2</div>
-        <div class="team-score" id="score2">0</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FULL-WIDTH BOTTOM KEYBOARD -->
-  <footer class="keyboard-bar" id="keyboardBar"></footer>
-
-  <!-- FLOATING GEAR BUTTON (BOTTOM RIGHT) -->
-  <button class="gear-btn" onclick="openSetupModal()" title="Teacher Setup / Change Phrase">⚙️</button>
-
-  <!-- TEACHER SETUP MODAL -->
-  <div id="setupModal" class="modal-overlay">
     <div class="setup-card">
-      <div class="setup-title">🎡 Wheel Setup</div>
-      
-      <div class="input-label">CATEGORY TAG</div>
-      <select id="categorySelect" class="phrase-input" onchange="handleCategoryChange(this.value)">
-        <option value="PHRASE">PHRASE</option>
-        <option value="THING">THING</option>
-        <option value="PERSON / CHARACTER">PERSON / CHARACTER</option>
-        <option value="PLACE">PLACE</option>
-        <option value="MOVIE / TV SHOW">MOVIE / TV SHOW</option>
-        <option value="FOOD & DRINK">FOOD & DRINK</option>
-        <option value="CUSTOM">CUSTOM CATEGORY...</option>
-      </select>
-      <input type="text" id="customCategoryInput" class="phrase-input hidden" placeholder="Type custom category..." style="margin-top: 8px;">
+      <div class="instructions-text">① Enter your phrase &nbsp; ② Press Start!</div>
 
-      <div class="input-label">SECRET PHRASE</div>
-      <div class="input-wrapper">
-        <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
-        <button type="button" id="eyeBtn" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
+      <div class="input-group">
+        <div class="input-label">🏷️ Category Tag:</div>
+        <select id="categorySelect" class="phrase-input select-category" onchange="checkCustomCat(this.value)">
+          <option value="PHRASE">PHRASE</option>
+          <option value="VOCABULARY WORD">VOCABULARY WORD</option>
+          <option value="THING">THING</option>
+          <option value="PERSON / CHARACTER">PERSON / CHARACTER</option>
+          <option value="PLACE">PLACE</option>
+          <option value="CUSTOM">CUSTOM CATEGORY...</option>
+        </select>
+        <input type="text" id="customCatInput" class="phrase-input hidden" placeholder="Type custom category..." style="margin-top: 8px;">
       </div>
 
-      <div class="action-btn-group">
-        <button class="start-btn" onclick="startGameFromSetup()">▶ START GAME</button>
-        <button class="qr-option-btn" onclick="showQRCodeModal()">📱 QR Code</button>
+      <div class="input-group">
+        <div class="input-label">📝 Your Phrase:</div>
+        <div class="input-wrapper">
+          <input type="password" id="phraseInput" class="phrase-input" placeholder="Type secret phrase..." autocomplete="off">
+          <button type="button" class="toggle-vis-btn" onclick="togglePhraseVisibility()">👁️</button>
+        </div>
       </div>
+
+      <button class="btn-main-start" onclick="startGame()">▶ Start Game!</button>
+      <br>
+      <button class="btn-qr-secondary" onclick="generateQRModal()">📱 Student QR Link (Scan to Play)</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       2. MAIN GAME SCREEN (IMAGE 2)
+       ========================================== -->
+  <div id="gameScreen" class="game-screen hidden">
+    <!-- TOP PUZZLE BOARD -->
+    <main class="board-area" id="boardArea"></main>
+
+    <!-- CENTER DASHBOARD -->
+    <section class="dashboard-panel">
+      <!-- LEFT CONTROLS -->
+      <div class="left-controls">
+        <div class="spin-prompt" id="spinPrompt">Click the wheel to spin!</div>
+        <div class="turn-badge" id="turnBadge">🔴 Team 1's Turn</div>
+        <button class="ctrl-btn btn-vowel" onclick="buyVowel()">💳 Buy Vowel (100 pts)</button>
+        <button class="ctrl-btn btn-solve" onclick="promptSolve()">✅ SOLVE!</button>
+      </div>
+
+      <!-- CENTER WHEEL -->
+      <div class="wheel-wrapper" onclick="spinWheel()">
+        <div class="pointer-arrow"></div>
+        <canvas id="wheelCanvas" width="280" height="280"></canvas>
+      </div>
+
+      <!-- RIGHT SCOREBOARD -->
+      <div class="right-scoreboard">
+        <div class="team-box team-1 active-team" id="team1Box">
+          <div class="team-title">● TEAM 1</div>
+          <div class="team-score" id="score1">0</div>
+        </div>
+        <div class="team-box team-2" id="team2Box">
+          <div class="team-title">● TEAM 2</div>
+          <div class="team-score" id="score2">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FULL WIDTH KEYBOARD -->
+    <footer class="keyboard-bar" id="keyboardBar"></footer>
+
+    <!-- FLOATING BUTTONS (SETTINGS & MOBILE KEYBOARD TRIGGER) -->
+    <div class="floating-btn-group">
+      <button class="float-icon-btn" onclick="triggerMobileKeyboard()" title="Pop up Mobile Keyboard">📱</button>
+      <button class="float-icon-btn" onclick="returnToSetup()" title="Settings / New Game">⚙️</button>
     </div>
   </div>
 
@@ -345,14 +555,96 @@
   <div id="qrModal" class="modal-overlay hidden">
     <div class="qr-card">
       <button class="close-btn" onclick="closeQRModal()">✕</button>
-      <div style="font-size: 0.8rem; font-weight: 900; color: #2563eb; letter-spacing: 1px;">SCAN TO PLAY ON TABLET</div>
-      <div style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
+      <div style="font-size: 0.8rem; font-weight: 900; color: #2563eb; letter-spacing: 1px;">STUDENT TABLET JOIN CODE</div>
+      <div style="font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-top: 4px;">Wheel of Fortune</div>
       <img id="qrImage" class="qr-img" src="" alt="QR Code">
-      <p style="font-weight: 700; color: #475569; font-size: 0.9rem;">Scan with iPad / Phone Camera</p>
+      <p style="font-weight: 700; color: #475569; font-size: 0.85rem;">Scan with iPad or Phone Camera to play!</p>
     </div>
   </div>
 
   <script>
+    /* =========================================================
+       WEB AUDIO SYNTHESIZER SOUND ENGINE
+       ========================================================= */
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new AudioCtx();
+    }
+
+    function playTick() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch(e){}
+    }
+
+    function playDing() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(987.77, audioCtx.currentTime); // B5
+        osc.frequency.setValueAtTime(1318.51, audioCtx.currentTime + 0.08); // E6
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch(e){}
+    }
+
+    function playBuzz() {
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(130, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+      } catch(e){}
+    }
+
+    function playFanfare() {
+      try {
+        initAudio();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.12 + 0.4);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.12);
+          osc.stop(audioCtx.currentTime + idx * 0.12 + 0.4);
+        });
+      } catch(e){}
+    }
+
+    /* =========================================================
+       GAME STATE & VARIABLES
+       ========================================================= */
     let secretPhrase = "";
     let categoryTag = "PHRASE";
     let revealedLetters = new Set();
@@ -369,13 +661,13 @@
       { label: '300', color: '#22c55e', value: 300 },
       { label: '400', color: '#3b82f6', value: 400 },
       { label: '500', color: '#eab308', value: 500, textColor: '#000' },
-      { label: 'LOSE', color: '#1e1b4b', value: 'LOSE' },
+      { label: 'BANKRUPT', color: '#111827', value: 'BANKRUPT' },
       { label: '200', color: '#f97316', value: 200 },
       { label: '100', color: '#ec4899', value: 100 },
       { label: '300', color: '#22c55e', value: 300 },
-      { label: '400', color: '#3b82f6', value: 400 },
-      { label: '500', color: '#eab308', value: 500, textColor: '#000' },
-      { label: 'LOSE', color: '#1e1b4b', value: 'LOSE' }
+      { label: '600', color: '#8b5cf6', value: 600 },
+      { label: '1000', color: '#ffdf00', value: 1000, textColor: '#000' },
+      { label: 'LOSE', color: '#312e81', value: 'LOSE' }
     ];
 
     let currentAngle = 0;
@@ -383,7 +675,9 @@
     window.onload = function() {
       drawWheel();
       buildKeyboard();
+      setupMobileBridge();
 
+      // Read URL params if loaded via QR Code
       const urlParams = new URLSearchParams(window.location.search);
       const encodedPhrase = urlParams.get('p');
       const encodedCat = urlParams.get('c');
@@ -392,43 +686,27 @@
         try {
           secretPhrase = atob(encodedPhrase).toUpperCase();
           categoryTag = encodedCat ? atob(encodedCat).toUpperCase() : "PHRASE";
-          document.getElementById('setupModal').classList.add('hidden');
-          initGame();
-          return;
-        } catch (e) {}
+          launchGameScreen();
+        } catch(e){}
       }
-      openSetupModal();
     };
-
-    function openSetupModal() {
-      document.getElementById('setupModal').classList.remove('hidden');
-    }
 
     function togglePhraseVisibility() {
       const input = document.getElementById('phraseInput');
-      const eyeBtn = document.getElementById('eyeBtn');
-      if (input.type === 'password') {
-        input.type = 'text';
-        eyeBtn.textContent = '🙈';
-      } else {
-        input.type = 'password';
-        eyeBtn.textContent = '👁️';
-      }
+      input.type = input.type === 'password' ? 'text' : 'password';
     }
 
-    function handleCategoryChange(val) {
-      document.getElementById('customCategoryInput').classList.toggle('hidden', val !== 'CUSTOM');
+    function checkCustomCat(val) {
+      document.getElementById('customCatInput').classList.toggle('hidden', val !== 'CUSTOM');
     }
 
     function getSelectedCategory() {
-      const selectVal = document.getElementById('categorySelect').value;
-      if (selectVal === 'CUSTOM') {
-        return document.getElementById('customCategoryInput').value.trim().toUpperCase() || "PUZZLE";
-      }
-      return selectVal;
+      const val = document.getElementById('categorySelect').value;
+      if (val === 'CUSTOM') return document.getElementById('customCatInput').value.trim().toUpperCase() || "PUZZLE";
+      return val;
     }
 
-    function startGameFromSetup() {
+    function startGame() {
       const input = document.getElementById('phraseInput').value.trim().toUpperCase();
       if (!input || !/^[A-Z\s]+$/.test(input)) {
         alert("Please enter a valid phrase using letters and spaces only!");
@@ -436,12 +714,21 @@
       }
       secretPhrase = input;
       categoryTag = getSelectedCategory();
-      
-      document.getElementById('setupModal').classList.add('hidden');
+      launchGameScreen();
+    }
+
+    function launchGameScreen() {
+      document.getElementById('setupScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
       initGame();
     }
 
-    function showQRCodeModal() {
+    function returnToSetup() {
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('setupScreen').classList.remove('hidden');
+    }
+
+    function generateQRModal() {
       const input = document.getElementById('phraseInput').value.trim().toUpperCase();
       if (!input) {
         alert("Please enter a secret phrase first!");
@@ -467,12 +754,12 @@
       updateScoreboard();
       renderBoard();
       resetKeyboard();
-      document.getElementById('statusText').textContent = "Click the wheel to spin!";
+      document.getElementById('spinPrompt').textContent = "Click the wheel to spin!";
     }
 
-    /* MULTI-ROW WORD WRAPPING LOGIC */
+    /* PUZZLE BOARD WRAPPING */
     function renderBoard() {
-      const container = document.getElementById('boardContainer');
+      const container = document.getElementById('boardArea');
       container.innerHTML = "";
 
       const words = secretPhrase.split(' ');
@@ -500,12 +787,12 @@
         for (let char of rowText) {
           const card = document.createElement('div');
           if (char === ' ') {
-            card.className = 'tile-card space';
+            card.className = 'tile-card space-tile';
           } else if (revealedLetters.has(char)) {
-            card.className = 'tile-card letter-revealed';
+            card.className = 'tile-card revealed-tile';
             card.textContent = char;
           } else {
-            card.className = 'tile-card letter-hidden';
+            card.className = 'tile-card hidden-tile';
           }
           rowDiv.appendChild(card);
         }
@@ -513,22 +800,22 @@
       });
     }
 
-    /* WHEEL CANVAS (320x320 HIGH RESOLUTION) */
+    /* CANVAS WHEEL ENGINE */
     function drawWheel() {
       const canvas = document.getElementById('wheelCanvas');
       const ctx = canvas.getContext('2d');
       const numSlices = slices.length;
       const arc = (2 * Math.PI) / numSlices;
 
-      ctx.clearRect(0, 0, 320, 320);
+      ctx.clearRect(0, 0, 280, 280);
 
       for (let i = 0; i < numSlices; i++) {
         const angle = currentAngle + i * arc;
         ctx.beginPath();
         ctx.fillStyle = slices[i].color;
-        ctx.moveTo(160, 160);
-        ctx.arc(160, 160, 150, angle, angle + arc);
-        ctx.lineTo(160, 160);
+        ctx.moveTo(140, 140);
+        ctx.arc(140, 140, 130, angle, angle + arc);
+        ctx.lineTo(140, 140);
         ctx.fill();
 
         ctx.strokeStyle = "rgba(255,255,255,0.3)";
@@ -536,39 +823,46 @@
         ctx.stroke();
 
         ctx.save();
-        ctx.translate(160, 160);
+        ctx.translate(140, 140);
         ctx.rotate(angle + arc / 2);
         ctx.textAlign = "right";
         ctx.fillStyle = slices[i].textColor || "#ffffff";
-        ctx.font = "900 18px 'Segoe UI', sans-serif";
-        ctx.fillText(slices[i].label, 138, 6);
+        ctx.font = "900 15px 'Segoe UI', sans-serif";
+        ctx.fillText(slices[i].label, 120, 5);
         ctx.restore();
       }
 
       ctx.beginPath();
-      ctx.arc(160, 160, 24, 0, 2 * Math.PI);
+      ctx.arc(140, 140, 20, 0, 2 * Math.PI);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
       ctx.lineWidth = 3;
-      ctx.strokeStyle = "#cbd5e1";
+      ctx.strokeStyle = "#94a3b8";
       ctx.stroke();
     }
 
     function spinWheel() {
       if (isSpinning || canGuessConsonant || buyingVowel) return;
       isSpinning = true;
-      document.getElementById('statusText').textContent = "Spinning...";
+      document.getElementById('spinPrompt').textContent = "Spinning...";
 
       const extraRotations = 5 + Math.random() * 5;
       const targetAngle = currentAngle + extraRotations * 2 * Math.PI;
       const startTime = performance.now();
-      const duration = 3500;
+      const duration = 3800;
+      let lastTickAngle = currentAngle;
 
       function animate(now) {
         const elapsed = now - startTime;
         if (elapsed < duration) {
           const easeOut = 1 - Math.pow(1 - elapsed / duration, 3);
           currentAngle = targetAngle * easeOut;
+          
+          if (Math.abs(currentAngle - lastTickAngle) > (2 * Math.PI / 12)) {
+            playTick();
+            lastTickAngle = currentAngle;
+          }
+
           drawWheel();
           requestAnimationFrame(animate);
         } else {
@@ -588,17 +882,24 @@
       const landedIndex = Math.floor(normalized / arc) % numSlices;
       const result = slices[landedIndex];
 
-      if (result.value === 'LOSE') {
-        document.getElementById('statusText').textContent = "Landed on LOSE TURN!";
+      if (result.value === 'BANKRUPT') {
+        playBuzz();
+        scores[currentTeam] = 0;
+        updateScoreboard();
+        document.getElementById('spinPrompt').textContent = "💥 BANKRUPT! Lost all points!";
+        switchTurn();
+      } else if (result.value === 'LOSE') {
+        playBuzz();
+        document.getElementById('spinPrompt').textContent = "Landed on LOSE TURN!";
         switchTurn();
       } else {
         spunValue = result.value;
         canGuessConsonant = true;
-        document.getElementById('statusText').textContent = `Landed on $${spunValue}! Pick a consonant.`;
+        document.getElementById('spinPrompt').textContent = `Landed on $${spunValue}! Pick a consonant.`;
       }
     }
 
-    /* FULL WIDTH KEYBOARD */
+    /* FULL-WIDTH KEYBOARD BOARD */
     function buildKeyboard() {
       const kb = document.getElementById('keyboardBar');
       kb.innerHTML = "";
@@ -660,13 +961,15 @@
       const occurrences = (secretPhrase.match(new RegExp(char, "g")) || []).length;
 
       if (occurrences > 0) {
+        playDing();
         const earned = occurrences * pointsPerOccurrence;
         scores[currentTeam] += earned;
         updateScoreboard();
-        document.getElementById('statusText').textContent = `Found ${occurrences} '${char}'! +$${earned}`;
+        document.getElementById('spinPrompt').textContent = `Found ${occurrences} '${char}'! +$${earned}`;
         checkWin();
       } else {
-        document.getElementById('statusText').textContent = `No '${char}' found!`;
+        playBuzz();
+        document.getElementById('spinPrompt').textContent = `No '${char}' found!`;
         switchTurn();
       }
     }
@@ -680,7 +983,8 @@
       scores[currentTeam] -= 100;
       updateScoreboard();
       buyingVowel = true;
-      document.getElementById('statusText').textContent = "Pick a vowel (A, E, I, O, U)";
+      document.getElementById('spinPrompt').textContent = "Pick a vowel (A, E, I, O, U)";
+      triggerMobileKeyboard();
     }
 
     function switchTurn() {
@@ -698,8 +1002,8 @@
       badge.textContent = currentTeam === 1 ? "🔴 Team 1's Turn" : "🔵 Team 2's Turn";
       badge.style.background = currentTeam === 1 ? "#ef4444" : "#2563eb";
 
-      document.getElementById('team1Box').classList.toggle('active', currentTeam === 1);
-      document.getElementById('team2Box').classList.toggle('active', currentTeam === 2);
+      document.getElementById('team1Box').classList.toggle('active-team', currentTeam === 1);
+      document.getElementById('team2Box').classList.toggle('active-team', currentTeam === 2);
     }
 
     function promptSolve() {
@@ -709,31 +1013,99 @@
       if (guess === secretPhrase) {
         for (let char of secretPhrase) if (char !== ' ') revealedLetters.add(char);
         renderBoard();
-        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED IT!`;
-        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with $${scores[currentTeam]}!`), 300);
+        celebrateWin();
       } else {
-        alert("Incorrect guess!");
+        playBuzz();
+        alert("Incorrect solution!");
         switchTurn();
       }
     }
 
     function checkWin() {
       const allRevealed = secretPhrase.split('').every(c => c === ' ' || revealedLetters.has(c));
-      if (allRevealed) {
-        document.getElementById('statusText').textContent = `🎉 TEAM ${currentTeam} SOLVED IT!`;
-        setTimeout(() => alert(`🎉 Team ${currentTeam} wins with $${scores[currentTeam]}!`), 300);
-      }
+      if (allRevealed) celebrateWin();
     }
 
-    /* HARDWARE KEYBOARD LISTENER */
+    function celebrateWin() {
+      playFanfare();
+      triggerConfetti();
+      document.getElementById('spinPrompt').textContent = `🎉 TEAM ${currentTeam} SOLVED IT!`;
+      setTimeout(() => alert(`🎉 Team ${currentTeam} Wins with $${scores[currentTeam]}!`), 300);
+    }
+
+    /* MOBILE NATIVE KEYBOARD BRIDGE */
+    function setupMobileBridge() {
+      const mobileInput = document.getElementById('hiddenMobileInput');
+      mobileInput.addEventListener('input', (e) => {
+        const char = e.target.value.slice(-1).toUpperCase();
+        mobileInput.value = "";
+        if (/^[A-Z]$/.test(char)) {
+          const btn = document.getElementById(`key-${char}`);
+          if (btn && !btn.disabled) handleLetterGuess(char);
+        }
+      });
+    }
+
+    function triggerMobileKeyboard() {
+      const mobileInput = document.getElementById('hiddenMobileInput');
+      mobileInput.focus();
+    }
+
+    /* HARDWARE KEYBOARD LISTENERS */
     document.addEventListener('keydown', (e) => {
-      if (!document.getElementById('setupModal').classList.contains('hidden')) return;
+      if (!document.getElementById('setupScreen').classList.contains('hidden')) return;
       const key = e.key.toUpperCase();
       if (/^[A-Z]$/.test(key)) {
         const btn = document.getElementById(`key-${key}`);
         if (btn && !btn.disabled) handleLetterGuess(key);
       }
     });
+
+    /* CONFETTI PARTICLE SYSTEM */
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -10,
+        r: Math.random() * 8 + 4,
+        d: Math.random() * 120,
+        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+        tilt: Math.random() * 10 - 10,
+        tiltAngle: 0,
+        tiltAngleIncremental: Math.random() * 0.07 + 0.05
+      }));
+
+      let animationFrame;
+      const startTime = performance.now();
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.tiltAngle += p.tiltAngleIncremental;
+          p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
+          p.tilt = Math.sin(p.tiltAngle) * 15;
+
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+          ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+          ctx.stroke();
+        });
+
+        if (performance.now() - startTime < 4000) {
+          animationFrame = requestAnimationFrame(draw);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(animationFrame);
+        }
+      }
+      draw();
+    }
   </script>
 </body>
 </html>
